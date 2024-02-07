@@ -31,8 +31,8 @@ public class ShipApp {
   }
 
   public static void establishSeaTradeConnection(String address, int portNr, String companyName) {
-    String var10000 = inputSelectionStrings[0];
-    String serverMessage = var10000 + "Quickstart:lissabon:" + companyName;
+    // TODO: make company chooseable, make harbour chooseable
+    String serverMessage = inputSelectionStrings[0] + "Quickstart:lissabon:" + companyName;
     System.out.println("debug establishSeaTradeConnection registerMessage = " + serverMessage);
 
     try {
