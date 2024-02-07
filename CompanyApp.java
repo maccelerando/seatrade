@@ -17,7 +17,7 @@ public class CompanyApp {
   private static Listener listener;
   private static String[] inputSelectionStrings;
   private double credit = 0.0D;
-  private static AutoComplete autoComplete = new AutoComplete(inputSelectionStrings);
+  private static AutoComplete autoComplete;
 
   public static void main(String[] args) {
     String address = setServerAddress();
@@ -67,25 +67,25 @@ public class CompanyApp {
 
   }
 
-  // TODO: delete method since there is a new class for that functionality
-  private static String autoCompleteInput(String input) {
-    String completed = "";
-
-    for(int i = 0; i < inputSelectionStrings.length; ++i) {
-      for(int j = 0; j < inputSelectionStrings[i].length(); ++j) {
-        if (input.equals(inputSelectionStrings[i].substring(0, j + 1))) {
-          completed = inputSelectionStrings[i];
-          break;
-        }
-      }
-    }
-    if (!completed.isEmpty()) {
-      System.out.println("Assume input = " + completed);
-    } else {
-      System.out.println("Wrong input: " + input);
-    }
-    return completed;
-  }
+//  // TODO: delete method since there is a new class for that functionality
+//  private static String autoCompleteInput(String input) {
+//    String completed = "";
+//
+//    for(int i = 0; i < inputSelectionStrings.length; ++i) {
+//      for(int j = 0; j < inputSelectionStrings[i].length(); ++j) {
+//        if (input.equals(inputSelectionStrings[i].substring(0, j + 1))) {
+//          completed = inputSelectionStrings[i];
+//          break;
+//        }
+//      }
+//    }
+//    if (!completed.isEmpty()) {
+//      System.out.println("Assume input = " + completed);
+//    } else {
+//      System.out.println("Wrong input: " + input);
+//    }
+//    return completed;
+//  }
 
   private static void establishConnection(String address, int portNr) {
     try {
@@ -97,12 +97,11 @@ public class CompanyApp {
       listener = new Listener(DEFAULT_PORT_NUMBER, socket);
       listener.start();
       printWriter = new PrintWriter(outputStream, true);
-      printWriter.println();
+      printWriter.println(serverMessage);
       System.out.println("Sent message to Server = " + serverMessage);
     } catch (Exception e) {
       System.out.println("Error establishing connection with the server: " + e.getMessage());
     }
-
   }
 
   public static String setServerAddress() {
@@ -143,7 +142,6 @@ public class CompanyApp {
   public static String setCompanyName() {
     String companyName = COMPANY_NAMES[0];
     System.out.println("Enter company name.");
-
     try {
       userInput = scanner.nextLine();
       if (!userInput.isEmpty()) {
@@ -157,7 +155,6 @@ public class CompanyApp {
     } catch (Exception e) {
       System.out.println("Error with user input.");
     }
-
     return companyName;
   }
 
