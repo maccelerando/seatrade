@@ -67,26 +67,6 @@ public class CompanyApp {
 
   }
 
-//  // TODO: delete method since there is a new class for that functionality
-//  private static String autoCompleteInput(String input) {
-//    String completed = "";
-//
-//    for(int i = 0; i < inputSelectionStrings.length; ++i) {
-//      for(int j = 0; j < inputSelectionStrings[i].length(); ++j) {
-//        if (input.equals(inputSelectionStrings[i].substring(0, j + 1))) {
-//          completed = inputSelectionStrings[i];
-//          break;
-//        }
-//      }
-//    }
-//    if (!completed.isEmpty()) {
-//      System.out.println("Assume input = " + completed);
-//    } else {
-//      System.out.println("Wrong input: " + input);
-//    }
-//    return completed;
-//  }
-
   private static void establishConnection(String address, int portNr) {
     try {
       String serverMessage = inputSelectionStrings[0];
