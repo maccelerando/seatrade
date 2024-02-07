@@ -19,13 +19,14 @@ public class ShipApp {
   private static volatile boolean exit;
   private static String[] inputSelectionStrings;
   private double seacoin = 0.0D;  // TODO: enhanced feature
+  private static AutoComplete autoComplete;
 
   public static void main(String[] args) {
     String seatradeServerAddress = DEFAULT_SEATRADE_SERVER_ADDRESS;
     boolean var2 = true;
     String shipName = setShipName();
     System.out.println("Ship name = " + shipName);
-    establishSeaTradeConnection(DEFAULT_SEATRADE_SERVER_ADDRESS, DEFAULT_SEATRADE_PORT_NUMBER, shipName);
+    establishSeaTradeConnection(seatradeServerAddress, DEFAULT_SEATRADE_PORT_NUMBER, shipName);
 
   }
 
@@ -79,5 +80,6 @@ public class ShipApp {
     listener = null;
     exit = false;
     inputSelectionStrings = new String[]{"launch:", "moveto:harbour", "loadcargo", "unloadcargo", "exit"};
+    autoComplete = new AutoComplete(inputSelectionStrings);
   }
 }

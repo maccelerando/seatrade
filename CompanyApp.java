@@ -204,5 +204,6 @@ public class CompanyApp {
     printWriter = null;
     listener = null;
     inputSelectionStrings = new String[]{"register:", "getinfo:harbour", "getinfo:cargo", "exit"};
+    autoComplete = new AutoComplete(inputSelectionStrings);
   }
 }
