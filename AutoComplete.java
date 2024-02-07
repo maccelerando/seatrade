@@ -17,6 +17,11 @@ public class AutoComplete {
         }
       }
     }
+    if (!completed.isEmpty()) {
+      System.out.println("Assume input = " + completed);
+    } else {
+      System.out.println("Wrong input: " + input);
+    }
     return completed;
   }
 }
