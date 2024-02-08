@@ -12,10 +12,10 @@ public class ShipApp {
   private static final String[] DEFAULT_SHIP_NAMES = new String[]{"TradeWindsVoyager", "OceanNavigator", "MarisMerchant", "SeaHarmonyExplorer", "AquaVistaClipper", "BlueHorizonFreighter", "NauticalQuestCarrier", "WaveCrestTrader", "Neptune'sLegacy", "SeaSailEmpress", "HorizonHauler", "OceanPioneer", "AquaArrowCargo", "SeaBreezeClipper", "NautiVoyager", "BlueWaveMariner", "MaritimeMajesty", "SeaLinkExpress", "OceanCraftOdyssey", "TradeWindsDiscovery", "AquaGliderCarrier", "HorizonHarborTrader", "SeaSereneNavigator", "OceanJourneyVessel", "NautiQuestExplorer", "BlueMarlinTransporter", "SeaStarVoyager", "WaveRunnerFreighter", "Neptune'sPrideShip", "TradeWavesMariner", "AquaLineTrader", "HorizonSailCargo", "SeaGliderExpress", "OceanVanguard", "NauticalLegacyCarrier", "BlueVoyageMerchant", "MarisTradeClipper", "SeaCrestExplorer", "AquaSailTransport", "WaveQuestVoyager", "Neptune'sGrace", "SeaLoomCarrier", "HorizonCruiseTrader", "OceanVistaMariner", "NautiWaveExplorer", "BlueHavenFreighter", "AquaRiderClipper", "SeaSproutVoyager", "WaveChaseTransport", "TradeTideMariner", "AquaGlowCarrier", "HorizonSwayTrader", "OceanWhisperExplorer", "NautiWavesClipper", "BlueTideVoyager", "MaritimeWhirlFreighter", "SeaCrestExpress", "Neptune'sCrestShip", "AquaBreezeTransport", "WaveSailMariner"};
   private static Scanner scanner;
   private static String userInput;
-  private static Socket socket;
-  private static OutputStream outputStream;
-  private static PrintWriter printWriter;
-  private static Listener listener;
+//  private static Socket socket;
+//  private static OutputStream outputStream;
+//  private static PrintWriter printWriter;
+//  private static Listener listener;
   private static volatile boolean exit;
   private static String[] inputSelectionStrings;
   private double seacoin = 0.0D;  // TODO: enhanced feature
@@ -57,10 +57,10 @@ public class ShipApp {
   static {
     scanner = new Scanner(System.in);
     userInput = "no-input";
-    socket = null;
-    outputStream = null;
-    printWriter = null;
-    listener = null;
+//    socket = null;
+//    outputStream = null;
+//    printWriter = null;
+//    listener = null;
     exit = false;
     inputSelectionStrings = new String[]{"launch:", "moveto:harbour", "loadcargo", "unloadcargo", "exit"};
     autoComplete = new AutoComplete(inputSelectionStrings);

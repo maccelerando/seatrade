@@ -30,4 +30,32 @@ public class Communicator {
   public PrintWriter getPrintWriter() {
     return printWriter;
   }
+  
+  public void cleanup() {
+    if (listener != null) {
+      listener.interrupt();
+      try {
+        listener.join();
+      } catch (InterruptedException e) {
+        System.out.println("Error cleanup() listener.join() " + e.getMessage());
+      }
+    }
+    if (printWriter != null) {
+      printWriter.close();
+    }
+    if (socket != null) {
+      try {
+        socket.close();
+      } catch (IOException e) {
+        System.out.println("Error cleanup() socket.close() " + e.getMessage());
+      }
+    }
+    if (outputStream != null) {
+      try {
+        outputStream.close();
+      } catch (IOException e) {
+        System.out.println("Error cleanup() outputStream.close() " + e.getMessage());
+      }
+    }
+  }
 }

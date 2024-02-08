@@ -45,6 +45,6 @@ public class Listener extends Thread {
         System.out.println("Error in thread inputStream.close() " + var2.getMessage());
       }
     }
-
+    System.out.println("Listener interrupted");
   }
 }

@@ -11,10 +11,10 @@ public class CompanyApp {
   private static Scanner scanner;
   private static String userInput;
   private static volatile boolean exit;
-  private static Socket socket;
-  private static OutputStream outputStream;
-  private static PrintWriter printWriter;
-  private static Listener listener;
+//  private static Socket socket;
+//  private static OutputStream outputStream;
+//  private static PrintWriter printWriter;
+//  private static Listener listener;
   private static String[] inputSelectionStrings;
   private double credit = 0.0D;
   private static AutoComplete autoComplete;
@@ -60,7 +60,7 @@ public class CompanyApp {
 
   private static void sendMessageToServer(String message) {
     try {
-      printWriter.println(message);
+      communicator.getPrintWriter().println(message);
       System.out.println("Sent message to Server = " + message);
     } catch (Exception e) {
       System.out.println("Error sendMessageToServer: " + e.getMessage());
@@ -138,35 +138,38 @@ public class CompanyApp {
       scanner.close();
     }
 
-    if (listener != null) {
-      listener.interrupt();
-
-      try {
-        listener.join();
-      } catch (InterruptedException e) {
-        System.out.println("Error cleanup() listener.join() " + e.getMessage());
-      }
+//    if (listener != null) {
+//      listener.interrupt();
+//
+//      try {
+//        listener.join();
+//      } catch (InterruptedException e) {
+//        System.out.println("Error cleanup() listener.join() " + e.getMessage());
+//      }
+//    }
+    if (communicator != null) {
+      communicator.cleanup();
     }
-
-    if (printWriter != null) {
-      printWriter.close();
-    }
-
-    if (socket != null) {
-      try {
-        socket.close();
-      } catch (IOException e) {
-        System.out.println("Error cleanup() socket.close() " + e.getMessage());
-      }
-    }
-
-    if (outputStream != null) {
-      try {
-        outputStream.close();
-      } catch (IOException e) {
-        System.out.println("Error cleanup() outputStream.close() " + e.getMessage());
-      }
-    }
+//
+//    if (printWriter != null) {
+//      printWriter.close();
+//    }
+//
+//    if (socket != null) {
+//      try {
+//        socket.close();
+//      } catch (IOException e) {
+//        System.out.println("Error cleanup() socket.close() " + e.getMessage());
+//      }
+//    }
+//
+//    if (outputStream != null) {
+//      try {
+//        outputStream.close();
+//      } catch (IOException e) {
+//        System.out.println("Error cleanup() outputStream.close() " + e.getMessage());
+//      }
+//    }
 
   }
 
@@ -174,10 +177,10 @@ public class CompanyApp {
     scanner = new Scanner(System.in);
     userInput = "no-input";
     exit = false;
-    socket = null;
-    outputStream = null;
-    printWriter = null;
-    listener = null;
+//    socket = null;
+//    outputStream = null;
+//    printWriter = null;
+//    listener = null;
     inputSelectionStrings = new String[]{"register:", "getinfo:harbour", "getinfo:cargo", "exit"};
     autoComplete = new AutoComplete(inputSelectionStrings);
   }
