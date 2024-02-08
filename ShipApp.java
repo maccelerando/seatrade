@@ -20,6 +20,7 @@ public class ShipApp {
   private static String[] inputSelectionStrings;
   private double seacoin = 0.0D;  // TODO: enhanced feature
   private static AutoComplete autoComplete;
+  private static Communicator communicator;
 
   public static void main(String[] args) {
     String seatradeServerAddress = DEFAULT_SEATRADE_SERVER_ADDRESS;
@@ -30,19 +31,14 @@ public class ShipApp {
 
   }
 
-  public static void establishSeaTradeConnection(String address, int portNr, String companyName) {
-    // TODO: make company chooseable, make harbour chooseable
-    String serverMessage = inputSelectionStrings[0] + "Quickstart:lissabon:" + companyName;
-    System.out.println("debug establishSeaTradeConnection registerMessage = " + serverMessage);
+  public static void establishSeaTradeConnection(String address, int portNumber, String companyName) {
 
     try {
-      socket = new Socket(address, portNr);
-      System.out.println("Connected to server on port " + portNr + ".");
-      outputStream = socket.getOutputStream();
-      listener = new Listener(portNr, socket);
-      listener.start();
-      printWriter = new PrintWriter(outputStream, true);
-      printWriter.println(serverMessage);
+      communicator = new Communicator(address, portNumber);
+      // TODO: make company chooseable, make harbour chooseable
+      String serverMessage = inputSelectionStrings[0] + "Quickstart:lissabon:" + companyName;
+      System.out.println("debug establishSeaTradeConnection registerMessage = " + serverMessage);
+      communicator.getPrintWriter().println(serverMessage);
       System.out.println("Sent message to Server = " + serverMessage);
     } catch (Exception e) {
       System.out.println("Error establishSeaTradeConnection " + e.getMessage());

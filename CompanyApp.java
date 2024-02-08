@@ -18,6 +18,7 @@ public class CompanyApp {
   private static String[] inputSelectionStrings;
   private double credit = 0.0D;
   private static AutoComplete autoComplete;
+  private static Communicator communicator;
 
   public static void main(String[] args) {
     String address = setServerAddress();
@@ -67,17 +68,11 @@ public class CompanyApp {
 
   }
 
-  private static void establishConnection(String address, int portNr) {
+  private static void establishConnection(String address, int portNumber) {
     try {
+      communicator = new Communicator(address, portNumber);
       String serverMessage = inputSelectionStrings[0];
-      System.out.println("debug establishConnection registerMessage = " + serverMessage);
-      socket = new Socket(address, portNr);
-      System.out.println("Connected to server on port " + portNr + ".");
-      outputStream = socket.getOutputStream();
-      listener = new Listener(DEFAULT_PORT_NUMBER, socket);
-      listener.start();
-      printWriter = new PrintWriter(outputStream, true);
-      printWriter.println(serverMessage);
+      communicator.getPrintWriter().println(serverMessage);
       System.out.println("Sent message to Server = " + serverMessage);
     } catch (Exception e) {
       System.out.println("Error establishing connection with the server: " + e.getMessage());
