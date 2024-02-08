@@ -1,4 +1,7 @@
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.Statement;
+import java.sql.SQLException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
@@ -19,6 +22,7 @@ public class CompanyApp {
    private double credit = 0.0D;
 
    public static void main(String[] args) {
+	   createDatabaseTables();
       String address = setServerAddress();
       int portNr = setPortNumber();
       String companyName = setCompanyName();
@@ -33,6 +37,8 @@ public class CompanyApp {
       cleanup();
       System.exit(0);
    }
+   
+   
 
    private static void sendToServer() {
       System.out.println("Enter message to server. Suggestions: \n-> register:companyname\n-> getinfo:harbour\n-> getinfo:cargo\n-> exit");
@@ -208,4 +214,43 @@ public class CompanyApp {
       listener = null;
       inputSelectionStrings = new String[]{"register:", "getinfo:harbour", "getinfo:cargo", "exit"};
    }
+   
+   private static void createDatabaseTables() {
+	    try (Connection con = connect.getConnection()) {
+	        if (con != null) {
+	            System.out.println("Connected to database, creating tables...");
+
+	            // SQL-Befehl zum Löschen der Tabellen, falls sie bereits existieren
+	            String dropHarbour = "DROP TABLE IF EXISTS harbour;";
+	            String dropShip = "DROP TABLE IF EXISTS ship;";
+
+	            // SQL-Befehl zum Erstellen der Tabelle harbour
+	            String createHarbour = "CREATE TABLE harbour (" +
+	                    "cargos INT, " +
+	                    "position VARCHAR(255), " +
+	                    "name VARCHAR(255)" +
+	                    ");";
+
+	            // SQL-Befehl zum Erstellen der Tabelle ship
+	            String createShip = "CREATE TABLE ship (" +
+	                    "credit INT, " +
+	                    "position VARCHAR(255), " +
+	                    "name VARCHAR(255), " +
+	                    "routes INT" +
+	                    ");";
+
+	            Statement stmt = con.createStatement();
+
+	            // Ausführen der Lösch- und Erstellungsbefehle
+	            stmt.execute(dropHarbour);
+	            stmt.execute(dropShip);
+	            stmt.execute(createHarbour);
+	            stmt.execute(createShip);
+
+	            System.out.println("Tables created successfully");
+	        }
+	    } catch (SQLException | ClassNotFoundException e) {
+	        System.out.println("Error creating database tables: " + e.getMessage());
+	    }
+	}
 }
