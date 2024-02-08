@@ -32,30 +32,32 @@ public class Communicator {
   }
   
   public void cleanup() {
-    if (listener != null) {
-      listener.interrupt();
-      try {
-        listener.join();
-      } catch (InterruptedException e) {
-        System.out.println("Error cleanup() listener.join() " + e.getMessage());
-      }
-    }
-    if (printWriter != null) {
-      printWriter.close();
-    }
+    System.out.println("start Communicator cleanup");
     if (socket != null) {
       try {
         socket.close();
+        System.out.println("Communicator socket closed");
       } catch (IOException e) {
         System.out.println("Error cleanup() socket.close() " + e.getMessage());
       }
     }
+    if (listener != null) {
+      listener.interrupt();
+      System.out.println("listener.inputStream set to null");
+    }
+
+    if (printWriter != null) {
+      printWriter.close();
+      System.out.println("Communicator printWriter closed");
+    }
     if (outputStream != null) {
       try {
         outputStream.close();
+        System.out.println("Communicator outputStream closed");
       } catch (IOException e) {
         System.out.println("Error cleanup() outputStream.close() " + e.getMessage());
       }
     }
+    System.out.println("Communicator cleanup finished");
   }
 }

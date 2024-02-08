@@ -8,11 +8,11 @@ public class Listener extends Thread {
   String input = "nothing";
   BufferedReader inputStream = null;
 
-  Listener(int var1, Socket var2) {
+  Listener(int var1, Socket socket) {
     this.port = var1;
 
     try {
-      this.inputStream = new BufferedReader(new InputStreamReader(var2.getInputStream()));
+      this.inputStream = new BufferedReader(new InputStreamReader(socket.getInputStream()));
     } catch (IOException var4) {
       System.out.println("Error Thread inputStream initialisation " + var4.getMessage());
     }
@@ -29,7 +29,6 @@ public class Listener extends Thread {
           System.out.println("End listening. The stream is closed.");
           break;
         }
-
         System.out.println("Thread answer from server = " + this.input);
       } catch (IOException var3) {
         if (!interrupted()) {

@@ -22,6 +22,10 @@ public class ShipApp {
     System.out.println("Ship name = " + shipName);
     establishSeaTradeConnection(seatradeServerAddress, DEFAULT_SEATRADE_PORT_NUMBER, shipName);
 
+    // main routine
+//    while (!exit) {
+//      sentToServer();
+//    }
   }
 
   public static void establishSeaTradeConnection(String address, int portNumber, String companyName) {

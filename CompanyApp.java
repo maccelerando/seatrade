@@ -2,28 +2,29 @@ import java.util.Scanner;
 
 public class CompanyApp {
   private static final String[] COMPANY_NAMES = new String[]{"OceanLink", "AquaMarine", "SeaVista", "Nautical", "BlueHorizon", "SeaSwift", "Neptune's", "WaveCrest", "SeaHarbor", "Maritime", "AquaTrade", "Oceanic", "SeaSail", "BlueWave", "Horizon", "SeaCurrent", "Marisource", "AquaMeridian", "NautiLink", "OceanCraft"};
-  private static final String DEFAULT_SERVER_ADDRESS = "localhost";
-  private static final int DEFAULT_PORT_NUMBER = 8150;
+  private static final String DEFAULT_SEATRADE_SERVER_ADDRESS = "localhost";
+  private static final String DEFAULT_SHIPAPP_ADDRESS = "localhost";
+  private static final int DEFAULT_SEATRADE_PORT_NUMBER = 8150;
+  private static final int DEFAULT_SHIPAPP_PORT_NUMBER = 8152;
   private static Scanner scanner;
   private static String userInput;
-  private static volatile boolean exit;
+  private static volatile boolean exit = false;
   private static String[] inputSelectionStrings;
   private double credit = 0.0D;
   private static AutoComplete autoComplete;
   private static Communicator communicator;
 
   public static void main(String[] args) {
-    String address = setServerAddress();
+    String seatradeServerAddress = setServerAddress("SeaTrade");
     int portNr = setPortNumber();
     String companyName = setCompanyName();
     inputSelectionStrings[0] = inputSelectionStrings[0].concat(companyName);
-    establishConnection(address, portNr);
+    establishConnection(seatradeServerAddress, portNr);
 
     // main routine
-    while(!exit) {
+    while (!exit) {
       sendToServer();
     }
-
     cleanup();
     System.exit(0);
   }
@@ -42,12 +43,10 @@ public class CompanyApp {
     } catch (Exception e) {
       System.out.println("Error with input: " + e.getMessage());
     }
-
-    sendMessageToServer(input);
     if (input.equals("exit")) {
       exit = true;
     }
-
+    sendMessageToServer(input);
   }
 
   private static void sendMessageToServer(String message) {
@@ -71,25 +70,36 @@ public class CompanyApp {
     }
   }
 
-  public static String setServerAddress() {
-    String address = DEFAULT_SERVER_ADDRESS;
-    System.out.println("Enter server address. Default is " + address + ".");
+  // serverName should be "SeaTrade" or "ShipApp"
+  public static String setServerAddress(String serverName) {
+    String address = "";
+    switch (serverName) {
+    case "SeaTrade":
+      address = DEFAULT_SEATRADE_SERVER_ADDRESS;
+      break;
+    case "ShipApp":
+      address = DEFAULT_SHIPAPP_ADDRESS;
+      break;
+    default:
+      System.out.println("Error: SetServerAddress switch fall through to not reachable code");
+    }
+    System.out.println("Enter " + serverName + " IPv4 address. Default is " + address + ".");
     String userInput = scanner.nextLine();
     if (!userInput.isEmpty()) {
       try {
         address = userInput;  // TODO: check if user input is in valid server address format
       } catch (Exception e) {
-        System.out.println("Input error.\n Using default server address " + DEFAULT_SERVER_ADDRESS + ".");
+        System.out.println("Input error.\n Using default server address " + DEFAULT_SEATRADE_SERVER_ADDRESS + ".");
       }
     } else {
-      System.out.println("No input.\nUsing default server address " + DEFAULT_SERVER_ADDRESS + ".");
+      System.out.println("No input.\nUsing default server address " + DEFAULT_SEATRADE_SERVER_ADDRESS + ".");
     }
 
     return address;
   }
 
   public static int setPortNumber() {
-    int portNr = DEFAULT_PORT_NUMBER;
+    int portNr = DEFAULT_SEATRADE_PORT_NUMBER;
     System.out.println("Enter port number. Default is " + portNr + ".");
     String userInput = scanner.nextLine();
     if (!userInput.isEmpty()) {
@@ -126,12 +136,16 @@ public class CompanyApp {
   }
 
   public static void cleanup() {
-    if (scanner != null) {
-      scanner.close();
-    }
+    System.out.println("start cleanup");
     if (communicator != null) {
       communicator.cleanup();
     }
+    if (scanner != null) {
+      scanner.close();
+      System.out.println("CompanyApp scanner closed");
+    }
+    System.out.println("cleanup complete");
+    System.out.println("program ended");
   }
 
   static {

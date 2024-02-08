@@ -22,7 +22,6 @@ public class AutoComplete {
     } else {
       System.out.println("Wrong input: " + input);
     }
-    System.out.println("debug autocompleted = " + completed);
     return completed;
   }
 }
