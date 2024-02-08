@@ -33,6 +33,10 @@ public class Communicator {
   
   public void cleanup() {
     System.out.println("start Communicator cleanup");
+    if (listener != null) {
+      listener.interrupt();
+      System.out.println("listener.inputStream set to null");
+    }
     if (socket != null) {
       try {
         socket.close();
@@ -41,11 +45,6 @@ public class Communicator {
         System.out.println("Error cleanup() socket.close() " + e.getMessage());
       }
     }
-    if (listener != null) {
-      listener.interrupt();
-      System.out.println("listener.inputStream set to null");
-    }
-
     if (printWriter != null) {
       printWriter.close();
       System.out.println("Communicator printWriter closed");
