@@ -164,7 +164,7 @@ public class CompanyApp {
   }
    
    private static void createDatabaseTables() {
-	    try (Connection con = connect.getConnection()) {
+	    try (Connection con = Connect.getConnection()) {
 	        if (con != null) {
 	            System.out.println("Connected to database, creating tables...");
 
