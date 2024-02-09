@@ -13,12 +13,12 @@ public class CompanyApp {
   private static final String DEFAULT_SHIPAPP_ADDRESS = "localhost";
   private static final int DEFAULT_SEATRADE_PORT_NUMBER = 8150;
   private static final int DEFAULT_SHIPAPP_PORT_NUMBER = 8152;
-  private static Scanner scanner;
-  private static String userInput;
+  private static Scanner scanner = new Scanner(System.in);
+  private static String userInput = "no-input";
   private static volatile boolean exit = false;
-  private static String[] inputSelectionStrings;
+  private static String[] inputSelectionStrings = new String[] {"register:", "getinfo:harbour", "getinfo:cargo", "exit"};
   private double credit = 0.0D;
-  private static AutoComplete autoComplete;
+  private static AutoComplete autoComplete = new AutoComplete(inputSelectionStrings);
   private static Communicator communicator;
 
   public static void main(String[] args) {
@@ -153,14 +153,6 @@ public class CompanyApp {
     }
     System.out.println("cleanup complete");
     System.out.println("program ended");
-  }
-
-  static {
-    scanner = new Scanner(System.in);
-    userInput = "no-input";
-    exit = false;
-    inputSelectionStrings = new String[]{"register:", "getinfo:harbour", "getinfo:cargo", "exit"};
-    autoComplete = new AutoComplete(inputSelectionStrings);
   }
    
    private static void createDatabaseTables() {
