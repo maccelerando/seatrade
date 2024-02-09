@@ -7,15 +7,15 @@ public class ShipApp {
   private static final int DEFAULT_COMPANYAPP_PORT_NUMBER = 8152;
   private static final int DEFAULT_SEATRADE_PORT_NUMBER = 8151;
   private static final String[] DEFAULT_SHIP_NAMES = new String[] {"TradeWindsVoyager", "OceanNavigator", "MarisMerchant", "SeaHarmonyExplorer", "AquaVistaClipper", "BlueHorizonFreighter", "NauticalQuestCarrier", "WaveCrestTrader", "Neptune'sLegacy", "SeaSailEmpress", "HorizonHauler", "OceanPioneer", "AquaArrowCargo", "SeaBreezeClipper", "NautiVoyager", "BlueWaveMariner", "MaritimeMajesty", "SeaLinkExpress", "OceanCraftOdyssey", "TradeWindsDiscovery", "AquaGliderCarrier", "HorizonHarborTrader", "SeaSereneNavigator", "OceanJourneyVessel", "NautiQuestExplorer", "BlueMarlinTransporter", "SeaStarVoyager", "WaveRunnerFreighter", "Neptune'sPrideShip", "TradeWavesMariner", "AquaLineTrader", "HorizonSailCargo", "SeaGliderExpress", "OceanVanguard", "NauticalLegacyCarrier", "BlueVoyageMerchant", "MarisTradeClipper", "SeaCrestExplorer", "AquaSailTransport", "WaveQuestVoyager", "Neptune'sGrace", "SeaLoomCarrier", "HorizonCruiseTrader", "OceanVistaMariner", "NautiWaveExplorer", "BlueHavenFreighter", "AquaRiderClipper", "SeaSproutVoyager", "WaveChaseTransport", "TradeTideMariner", "AquaGlowCarrier", "HorizonSwayTrader", "OceanWhisperExplorer", "NautiWavesClipper", "BlueTideVoyager", "MaritimeWhirlFreighter", "SeaCrestExpress", "Neptune'sCrestShip", "AquaBreezeTransport", "WaveSailMariner"};
-  private static Scanner scanner;
-  private static String userInput;
-  private static volatile boolean exit;
-  private static String[] inputSelectionStrings;
-  private double seacoin = 0.0D;  // TODO: enhanced feature
-  private static AutoComplete autoComplete;
+  private static final String[] HARBOR_NAMES = new String[] {"reykjavik", "lissabon", "dakar", "algier", "cotonau", "halifax", "plymouth", "brest", "new york", "carracas"};
+  private static volatile boolean exit = false;
+  private static Scanner scanner = new Scanner(System.in);
+  private static String userInput = "no-input";
+  private static String[] inputSelectionStrings = new String[]{"launch:", "moveto:", "loadcargo", "unloadcargo", "exit"};
+  private static AutoComplete autoComplete = new AutoComplete(inputSelectionStrings);
   private static Communicator communicatorSeaTrade;
   private static Communicator communicatorCompanyApp;
-  private static final String[] HARBOR_NAMES = new String[] {"reykjavik", "lissabon", "dakar", "algier", "cotonau", "halifax", "plymouth", "brest", "new york", "carracas"};
+  private double seacoin = 0.0D;  // TODO: enhanced feature
 
   public static void main(String[] args) {
     String seatradeServerAddress = DEFAULT_SEATRADE_SERVER_ADDRESS;
@@ -96,11 +96,4 @@ public class ShipApp {
     return shipName;
   }
 
-  static {
-    scanner = new Scanner(System.in);
-    userInput = "no-input";
-    exit = false;
-    inputSelectionStrings = new String[]{"launch:", "moveto:", "loadcargo", "unloadcargo", "exit"};
-    autoComplete = new AutoComplete(inputSelectionStrings);
-  }
 }
