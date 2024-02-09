@@ -6,7 +6,6 @@ public class AutoComplete {
     this.inputSelectionStrings = inputSelectionStrings;
   }
 
-  // TODO: add println() methods to tell the user what is happening
   public String autoCompleteInput(String input) {
     String completed = "";
     for (int i = 0; i < inputSelectionStrings.length; i++) {

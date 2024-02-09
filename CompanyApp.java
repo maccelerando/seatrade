@@ -23,13 +23,13 @@ public class CompanyApp {
 
     // main routine
     while (!exit) {
-      sendToServer();
+      sendToSeaTrade();
     }
     cleanup();
     System.exit(0);
   }
 
-  private static void sendToServer() {
+  private static void sendToSeaTrade() {
     System.out.println("Enter message to server. Suggestions: \n-> register:companyname\n-> getinfo:harbour\n-> getinfo:cargo\n-> exit");
     String input = "default";
 
@@ -94,7 +94,6 @@ public class CompanyApp {
     } else {
       System.out.println("No input.\nUsing default server address " + DEFAULT_SEATRADE_SERVER_ADDRESS + ".");
     }
-
     return address;
   }
 
