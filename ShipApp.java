@@ -17,11 +17,24 @@ public class ShipApp {
   private static Communicator communicatorCompanyApp;
   private double seacoin = 0.0D;  // TODO: enhanced feature
 
+
   public static void main(String[] args) {
     String seatradeServerAddress = DEFAULT_SEATRADE_SERVER_ADDRESS;
+    // Ship Name
     String shipName = setShipName();
     System.out.println("Ship name = " + shipName);
-    establishSeaTradeConnection(seatradeServerAddress, DEFAULT_SEATRADE_PORT_NUMBER, shipName);
+    // harbor name
+    String harborNameLaunch = "";
+    while (harborNameLaunch.isEmpty()) {
+      for (int i = 0; i < HARBOR_NAMES.length; i++) {
+        System.out.println("-> " + HARBOR_NAMES[i]);
+      }
+      System.out.println("Enter harbor name for ship launch");
+      harborNameLaunch = scanner.nextLine();
+      AutoComplete harborNameComplete = new AutoComplete(HARBOR_NAMES);
+      harborNameLaunch = harborNameComplete.autoCompleteInput(harborNameLaunch);
+    }
+    establishSeaTradeConnection(seatradeServerAddress, DEFAULT_SEATRADE_PORT_NUMBER, shipName, harborNameLaunch);
 
     // main routine
     while (!exit) {
@@ -68,11 +81,11 @@ public class ShipApp {
     }
   }
 
-  public static void establishSeaTradeConnection(String address, int portNumber, String companyName) {
+  public static void establishSeaTradeConnection(String address, int portNumber, String companyName, String harborName) {
     try {
       communicatorSeaTrade = new Communicator(address, portNumber);
-      // TODO: make company chooseable, make harbour chooseable
-      String serverMessage = inputSelectionStrings[0] + "Quickstart:lissabon:" + companyName;
+      // TODO: make company chooseable, make harbor chooseable
+      String serverMessage = inputSelectionStrings[0] + "Quickstart:" + harborName + ":" + companyName;
       System.out.println("debug establishSeaTradeConnection registerMessage = " + serverMessage);
       communicatorSeaTrade.getPrintWriter().println(serverMessage);
       System.out.println("Sent message to Server = " + serverMessage);
