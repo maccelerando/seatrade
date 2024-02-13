@@ -9,7 +9,7 @@ public class Communicator {
   private OutputStream outputStream;
   private PrintWriter printWriter;
   private Listener listener;
-  
+
   public Communicator(String address, int portNumber) {
     try {
       this.socket = new Socket(address, portNumber);
@@ -19,10 +19,10 @@ public class Communicator {
       listener.start();
       this.printWriter = new PrintWriter(outputStream, true);
     } catch (UnknownHostException e) {
-      System.out.println("ERROR: Communicytor() " + e.getMessage());
+      System.out.println("ERROR: Communicator() " + e.getMessage());
       e.printStackTrace();
     } catch (IOException e) {
-      System.out.println("ERROR: Communicytor() " + e.getMessage());
+      System.out.println("ERROR: Communicator() " + e.getMessage());
       e.printStackTrace();
     }
   }
@@ -30,7 +30,7 @@ public class Communicator {
   public PrintWriter getPrintWriter() {
     return printWriter;
   }
-  
+
   public void cleanup() {
     System.out.println("start Communicator cleanup");
     if (listener != null) {

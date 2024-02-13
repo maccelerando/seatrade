@@ -154,43 +154,34 @@ public class CompanyApp {
     System.out.println("cleanup complete");
     System.out.println("program ended");
   }
-   
-   private static void createDatabaseTables() {
-	    try (Connection con = Connect.getConnection()) {
-	        if (con != null) {
-	            System.out.println("Connected to database, creating tables...");
 
-	            // SQL-Befehl zum Löschen der Tabellen, falls sie bereits existieren
-	            String dropHarbour = "DROP TABLE IF EXISTS harbour;";
-	            String dropShip = "DROP TABLE IF EXISTS ship;";
+  private static void createDatabaseTables() {
+    try (Connection con = Connect.getConnection()) {
+      if (con != null) {
+        System.out.println("Connected to database, creating tables...");
 
-	            // SQL-Befehl zum Erstellen der Tabelle harbour
-	            String createHarbour = "CREATE TABLE harbour (" +
-	                    "cargos INT, " +
-	                    "position VARCHAR(255), " +
-	                    "name VARCHAR(255)" +
-	                    ");";
+        // SQL-Befehl zum Löschen der Tabellen, falls sie bereits existieren
+        String dropHarbour = "DROP TABLE IF EXISTS harbour;";
+        String dropShip = "DROP TABLE IF EXISTS ship;";
 
-	            // SQL-Befehl zum Erstellen der Tabelle ship
-	            String createShip = "CREATE TABLE ship (" +
-	                    "credit INT, " +
-	                    "position VARCHAR(255), " +
-	                    "name VARCHAR(255), " +
-	                    "routes INT" +
-	                    ");";
+        // SQL-Befehl zum Erstellen der Tabelle harbour
+        String createHarbour = "CREATE TABLE harbour (" + "cargos INT, " + "position VARCHAR(255), " + "name VARCHAR(255)" + ");";
 
-	            Statement stmt = con.createStatement();
+        // SQL-Befehl zum Erstellen der Tabelle ship
+        String createShip = "CREATE TABLE ship (" + "credit INT, " + "position VARCHAR(255), " + "name VARCHAR(255), " + "routes INT" + ");";
 
-	            // Ausführen der Lösch- und Erstellungsbefehle
-	            stmt.execute(dropHarbour);
-	            stmt.execute(dropShip);
-	            stmt.execute(createHarbour);
-	            stmt.execute(createShip);
+        Statement stmt = con.createStatement();
 
-	            System.out.println("Tables created successfully");
-	        }
-	    } catch (SQLException | ClassNotFoundException e) {
-	        System.out.println("Error creating database tables: " + e.getMessage());
-	    }
-	}
+        // Ausführen der Lösch- und Erstellungsbefehle
+        stmt.execute(dropHarbour);
+        stmt.execute(dropShip);
+        stmt.execute(createHarbour);
+        stmt.execute(createShip);
+
+        System.out.println("Tables created successfully");
+      }
+    } catch (SQLException | ClassNotFoundException e) {
+      System.out.println("Error creating database tables: " + e.getMessage());
+    }
+  }
 }

@@ -22,19 +22,19 @@ public class ShipApp {
     String shipName = setShipName();
     System.out.println("Ship name = " + shipName);
     establishSeaTradeConnection(seatradeServerAddress, DEFAULT_SEATRADE_PORT_NUMBER, shipName);
-    
+
     // main routine
     while (!exit) {
       sendToSeaTrade();
     }
-    
+
     // TODO cleanup
   }
-  
+
   private static void sendToSeaTrade() {
     System.out.println("Enter message to SeaTrade. Suggestions: \n-> moveto:harbour\n-> loadcargo\n-> unloadcargo\n-> exit");
     String input = "default";
-    
+
     try {
       input = scanner.nextLine();
       if (!input.isEmpty()) {
@@ -59,7 +59,7 @@ public class ShipApp {
     }
     sendMessageToSeaTrade(input);
   }
-  
+
   private static void sendMessageToSeaTrade(String message) {
     try {
       communicatorSeaTrade.getPrintWriter().println(message);
@@ -80,11 +80,11 @@ public class ShipApp {
       System.out.println("Error establishSeaTradeConnection " + e.getMessage());
     }
   }
-  
+
 //  public static void establishCompanyAppConnection(String address, int portNumber) {
 //    try {
 //      communicatorCompanyApp = new Communicator(address, portNumber);
-//      String messageCompanyApp = 
+//      String messageCompanyApp =
 //    }
 //  }
 
