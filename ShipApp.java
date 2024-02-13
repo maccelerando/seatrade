@@ -2,26 +2,29 @@ import java.util.Random;
 import java.util.Scanner;
 
 public class ShipApp {
+
+  // TODO move to UserInputHandler class and refactor this class
+  private static final String[] HARBOR_NAMES = new String[] {"reykjavik", "lissabon", "dakar", "algier", "cotonau", "halifax", "plymouth", "brest", "new york", "carracas"};
+
   private static final String DEFAULT_COMPANYAPP_SERVER_ADDRESS = "localhost";
   private static final String DEFAULT_SEATRADE_SERVER_ADDRESS = "localhost";
   private static final int DEFAULT_COMPANYAPP_PORT_NUMBER = 8152;
   private static final int DEFAULT_SEATRADE_PORT_NUMBER = 8151;
-  private static final String[] DEFAULT_SHIP_NAMES = new String[] {"TradeWindsVoyager", "OceanNavigator", "MarisMerchant", "SeaHarmonyExplorer", "AquaVistaClipper", "BlueHorizonFreighter", "NauticalQuestCarrier", "WaveCrestTrader", "Neptune'sLegacy", "SeaSailEmpress", "HorizonHauler", "OceanPioneer", "AquaArrowCargo", "SeaBreezeClipper", "NautiVoyager", "BlueWaveMariner", "MaritimeMajesty", "SeaLinkExpress", "OceanCraftOdyssey", "TradeWindsDiscovery", "AquaGliderCarrier", "HorizonHarborTrader", "SeaSereneNavigator", "OceanJourneyVessel", "NautiQuestExplorer", "BlueMarlinTransporter", "SeaStarVoyager", "WaveRunnerFreighter", "Neptune'sPrideShip", "TradeWavesMariner", "AquaLineTrader", "HorizonSailCargo", "SeaGliderExpress", "OceanVanguard", "NauticalLegacyCarrier", "BlueVoyageMerchant", "MarisTradeClipper", "SeaCrestExplorer", "AquaSailTransport", "WaveQuestVoyager", "Neptune'sGrace", "SeaLoomCarrier", "HorizonCruiseTrader", "OceanVistaMariner", "NautiWaveExplorer", "BlueHavenFreighter", "AquaRiderClipper", "SeaSproutVoyager", "WaveChaseTransport", "TradeTideMariner", "AquaGlowCarrier", "HorizonSwayTrader", "OceanWhisperExplorer", "NautiWavesClipper", "BlueTideVoyager", "MaritimeWhirlFreighter", "SeaCrestExpress", "Neptune'sCrestShip", "AquaBreezeTransport", "WaveSailMariner"};
-  private static final String[] HARBOR_NAMES = new String[] {"reykjavik", "lissabon", "dakar", "algier", "cotonau", "halifax", "plymouth", "brest", "new york", "carracas"};
+  private static final Scanner scanner = new Scanner(System.in);
   private static volatile boolean exit = false;
-  private static Scanner scanner = new Scanner(System.in);
   private static String userInput = "no-input";
   private static String[] inputSelectionStrings = new String[]{"launch:", "moveto:", "loadcargo", "unloadcargo", "exit"};
-  private static AutoComplete autoComplete = new AutoComplete(inputSelectionStrings);
+  private static AutoComplete autoComplete = new AutoComplete();
   private static Communicator communicatorSeaTrade;
   private static Communicator communicatorCompanyApp;
+  private static UserInputHandler userInputHandler = new UserInputHandler(scanner);
   private double seacoin = 0.0D;  // TODO: enhanced feature
 
 
   public static void main(String[] args) {
     String seatradeServerAddress = DEFAULT_SEATRADE_SERVER_ADDRESS;
     // Ship Name
-    String shipName = setShipName();
+    String shipName = userInputHandler.getUserInput("shipName");
     System.out.println("Ship name = " + shipName);
     // harbor name
     String harborNameLaunch = "";
@@ -29,10 +32,8 @@ public class ShipApp {
       for (int i = 0; i < HARBOR_NAMES.length; i++) {
         System.out.println("-> " + HARBOR_NAMES[i]);
       }
-      System.out.println("Enter harbor name for ship launch");
-      harborNameLaunch = scanner.nextLine();
-      AutoComplete harborNameComplete = new AutoComplete(HARBOR_NAMES);
-      harborNameLaunch = harborNameComplete.autoCompleteInput(harborNameLaunch);
+      System.out.println("TODO move this to UserInputHandler.");
+      harborNameLaunch = userInputHandler.getUserInput("harborName");
     }
     establishSeaTradeConnection(seatradeServerAddress, DEFAULT_SEATRADE_PORT_NUMBER, shipName, harborNameLaunch);
 

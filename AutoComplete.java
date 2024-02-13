@@ -1,12 +1,8 @@
 
 public class AutoComplete {
-  private String[] inputSelectionStrings;
 
-  public AutoComplete(String[] inputSelectionStrings) {
-    this.inputSelectionStrings = inputSelectionStrings;
-  }
 
-  public String autoCompleteInput(String input) {
+  public String autoCompleteInput(String input, String[] inputSelectionStrings) {
     String completed = "";
     for (int i = 0; i < inputSelectionStrings.length; i++) {
       for (int j = 0; j < inputSelectionStrings[i].length(); j++) {
