@@ -30,6 +30,7 @@ public class UserInputHandler {
       case "shipName":
         inputSelectionStrings = DEFAULT_SHIP_NAMES;
         System.out.println("Enter ship name!");
+        System.out.print("🚢 ");
         userInput = scanner.nextLine();
         if (userInput.isEmpty()) {
           System.out.println("No input. Ship name will be chosen by ShipApp.");
@@ -64,6 +65,7 @@ public class UserInputHandler {
             processedInput = autoComplete.autoCompleteInput(userInput, SA_ST_COMMANDS);
           }
           switch (processedInput) {
+            // moveto: follow up commands
             case "moveto:":
               inputSelectionStrings = DEFAULT_HARBOR_NAMES;
               System.out.println("Enter harbor name!");
@@ -80,6 +82,12 @@ public class UserInputHandler {
               break;
             case "exit":
               System.out.println("ShipApp ended." + SA_ST_SYMBOLS[SA_ST_SYMBOLS.length - 1]);
+              break;
+            case "loadcargo":
+              // "loadcargo" does not need additional operations
+              break;
+            case "unloadcargo":
+              // "unloadcargo" does not need additional operations
               break;
             default:
               System.out.println("Error: UserInputHandler getUserInput() unreachable code");
