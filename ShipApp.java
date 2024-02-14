@@ -22,22 +22,22 @@ public class ShipApp {
     String seatradeServerAddress = DEFAULT_SEATRADE_SERVER_ADDRESS;
     // Ship Name
     String shipName = userInputHandler.getUserInput("shipName");
-    System.out.println("Ship name = " + shipName);
     // harbor name
     String harborNameLaunch = "";
-    harborNameLaunch = userInputHandler.getUserInput("harborName");
+    while (harborNameLaunch.isEmpty()) {
+      harborNameLaunch = userInputHandler.getUserInput("harborName");
+    }
     establishSeaTradeConnection(seatradeServerAddress, DEFAULT_SEATRADE_PORT_NUMBER, shipName, harborNameLaunch);
 
     // main routine
     while (!exit) {
-      sendSeaTrade();
+      sendToSeaTrade();
     }
 
     // TODO cleanup
   }
 
-  // will replace sendToSeaTrade()
-  private static void sendSeaTrade() {
+  private static void sendToSeaTrade() {
     userInput = userInputHandler.getUserInput("seaTrade");
     if (userInput.equals("exit")) {
       exit = true;
@@ -56,7 +56,7 @@ public class ShipApp {
   public static void establishSeaTradeConnection(String address, int portNumber, String companyName, String harborName) {
     try {
       communicatorSeaTrade = new Communicator(address, portNumber);
-      // TODO: make company chooseable, make harbor chooseable
+      // TODO: make company chooseable
       String serverMessage = inputSelectionStrings[0] + "Quickstart:" + harborName + ":" + companyName;
       System.out.println("debug establishSeaTradeConnection registerMessage = " + serverMessage);
       communicatorSeaTrade.getPrintWriter().println(serverMessage);

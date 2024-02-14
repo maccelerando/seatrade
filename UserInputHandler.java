@@ -33,11 +33,12 @@ public class UserInputHandler {
         System.out.print("🚢 ");
         userInput = scanner.nextLine();
         if (userInput.isEmpty()) {
-          System.out.println("No input. Ship name will be chosen by ShipApp.");
           processedInput = DEFAULT_SHIP_NAMES[random.nextInt(DEFAULT_SHIP_NAMES.length)];
+          System.out.println("No input. Ship name chosen by ShipApp.");
+          System.out.println("🚢 " + processedInput);
           break;
         }
-        processedInput = autoComplete.autoCompleteInput(userInput, inputSelectionStrings);
+        processedInput = userInput;
         break;
       case "harborName":
         inputSelectionStrings = DEFAULT_HARBOR_NAMES;
@@ -48,11 +49,15 @@ public class UserInputHandler {
         System.out.print("⚓ ");
         userInput = scanner.nextLine();
         if (userInput.isEmpty()) {
-          System.out.println("No input. Harbor name will be chosen by ShipApp.");
           processedInput = DEFAULT_HARBOR_NAMES[random.nextInt(DEFAULT_HARBOR_NAMES.length)];
+          System.out.println("No input. Harbor name chosen by ShipApp.");
+          System.out.println("⚓ " + processedInput);
           break;
         }
         processedInput = autoComplete.autoCompleteInput(userInput, inputSelectionStrings);
+        if (!userInput.equals(processedInput)) {
+          System.out.println("⚓ " + processedInput);
+        }
         break;
       case "seaTrade":
         while (processedInput.isEmpty()) {
