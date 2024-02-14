@@ -1,4 +1,3 @@
-import java.util.Random;
 import java.util.Scanner;
 
 public class ShipApp {
@@ -9,7 +8,7 @@ public class ShipApp {
   private static final int DEFAULT_SEATRADE_PORT_NUMBER = 8151;
   private static final Scanner scanner = new Scanner(System.in);
   private static volatile boolean exit = false;
-  private static String userInput = "no-input";
+  private static String userInput = "";
   private static AutoComplete autoComplete = new AutoComplete();
   private static Communicator communicatorSeaTrade;
   private static Communicator communicatorCompanyApp;
@@ -20,7 +19,7 @@ public class ShipApp {
 
   public static void main(String[] args) {
     String seatradeServerAddress = DEFAULT_SEATRADE_SERVER_ADDRESS;
-    // Ship Name
+    // ship name
     String shipName = userInputHandler.getUserInput("shipName");
     // harbor name
     String harborNameLaunch = "";
@@ -58,7 +57,6 @@ public class ShipApp {
       communicatorSeaTrade = new Communicator(address, portNumber);
       // TODO: make company chooseable
       String serverMessage = inputSelectionStrings[0] + "Quickstart:" + harborName + ":" + companyName;
-      System.out.println("debug establishSeaTradeConnection registerMessage = " + serverMessage);
       communicatorSeaTrade.getPrintWriter().println(serverMessage);
       System.out.println("Sent message to Server = " + serverMessage);
     } catch (Exception e) {
