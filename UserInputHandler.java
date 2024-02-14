@@ -85,14 +85,14 @@ public class UserInputHandler {
                 processedInput = processedInput.concat(userInput);
               }
               break;
-            case "exit":
-              System.out.println("ShipApp ended." + SA_ST_SYMBOLS[SA_ST_SYMBOLS.length - 1]);
-              break;
             case "loadcargo":
               // "loadcargo" does not need additional operations
               break;
             case "unloadcargo":
               // "unloadcargo" does not need additional operations
+              break;
+            case "exit":
+              System.out.println("ShipApp ended." + SA_ST_SYMBOLS[SA_ST_SYMBOLS.length - 1]);
               break;
             default:
               System.out.println("Error: UserInputHandler getUserInput() unreachable code");
