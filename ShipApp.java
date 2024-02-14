@@ -28,13 +28,7 @@ public class ShipApp {
     System.out.println("Ship name = " + shipName);
     // harbor name
     String harborNameLaunch = "";
-    while (harborNameLaunch.isEmpty()) {
-      for (int i = 0; i < HARBOR_NAMES.length; i++) {
-        System.out.println("⚓ -> " + HARBOR_NAMES[i]);
-      }
-      System.out.println("TODO move this to UserInputHandler.");
-      harborNameLaunch = userInputHandler.getUserInput("harborName");
-    }
+    harborNameLaunch = userInputHandler.getUserInput("harborName");
     establishSeaTradeConnection(seatradeServerAddress, DEFAULT_SEATRADE_PORT_NUMBER, shipName, harborNameLaunch);
 
     // main routine
