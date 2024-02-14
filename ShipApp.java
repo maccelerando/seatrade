@@ -3,9 +3,6 @@ import java.util.Scanner;
 
 public class ShipApp {
 
-  // TODO move to UserInputHandler class and refactor this class
-  private static final String[] HARBOR_NAMES = new String[] {"reykjavik", "lissabon", "dakar", "algier", "cotonau", "halifax", "plymouth", "brest", "new york", "carracas"};
-
   private static final String DEFAULT_COMPANYAPP_SERVER_ADDRESS = "localhost";
   private static final String DEFAULT_SEATRADE_SERVER_ADDRESS = "localhost";
   private static final int DEFAULT_COMPANYAPP_PORT_NUMBER = 8152;
