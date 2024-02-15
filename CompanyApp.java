@@ -20,11 +20,12 @@ public class CompanyApp {
   private static UserInputHandler userInputHandler = new UserInputHandler(scanner);
 
   public static void main(String[] args) {
+    // database
     createDatabaseTables();
 
+    // initialize
     String seaTradeServerAddress = setSeaTradeServerAddress();
     int seaTradePortNumber = setPortNumber();
-    // wip
     companyName = setCompanyName();
     establishSeaTradeConnection(seaTradeServerAddress, seaTradePortNumber);
 
@@ -32,6 +33,7 @@ public class CompanyApp {
     while (!exit) {
       sendToSeaTrade();
     }
+    // program end
     cleanup();
     System.exit(0);
   }

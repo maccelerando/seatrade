@@ -19,8 +19,9 @@ public class ShipApp {
 
   public static void main(String[] args) {
     // TODO move server address selction to userInputHandler
-    // TODO move port number selection to userInputHandler
     String seatradeServerAddress = DEFAULT_SEATRADE_SERVER_ADDRESS;
+    // TODO move port number selection to userInputHandler
+
     // Ship Name
     String shipName = userInputHandler.getUserInput("shipName");
     // harbor name
