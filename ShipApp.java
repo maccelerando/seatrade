@@ -22,7 +22,7 @@ public class ShipApp {
     String seatradeServerAddress = DEFAULT_SEATRADE_SERVER_ADDRESS;
     // TODO move port number selection to userInputHandler
 
-    // Ship Name
+    // ship name
     String shipName = userInputHandler.getUserInput("shipName");
     // harbor name
     String harborNameLaunch = "";
