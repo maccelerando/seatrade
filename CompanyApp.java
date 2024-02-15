@@ -23,7 +23,10 @@ public class CompanyApp {
 
   public static void main(String[] args) {
     createDatabaseTables();
-    String seatradeServerAddress = setServerAddress("SeaTrade");
+
+    // new code
+    String seatradeServerAddress = setSeaTradeServerAddress();
+
     int portNr = setPortNumber();
     companyName = setCompanyName();
     establishSeaTradeConnection(seatradeServerAddress, portNr);
@@ -64,29 +67,14 @@ public class CompanyApp {
     }
   }
 
-  // serverName should be "SeaTrade" or "ShipApp"
-  public static String setServerAddress(String serverName) {
-    String address = "";
-    switch (serverName) {
-    case "SeaTrade":
-      address = DEFAULT_SEATRADE_SERVER_ADDRESS;
-      break;
-    case "ShipApp":
-      address = DEFAULT_SHIPAPP_ADDRESS;
-      break;
-    default:
-      System.out.println("Error: SetServerAddress switch fall through to not reachable code");
-    }
-    System.out.println("Enter " + serverName + " IPv4 address. Default is " + address + ".");
-    String userInput = scanner.nextLine();
+  public static String setSeaTradeServerAddress() {
+    String address = DEFAULT_SEATRADE_SERVER_ADDRESS;
+    System.out.println("Enter SeaTrade IPv4 server address. Default is " + DEFAULT_SEATRADE_SERVER_ADDRESS + ".");
+    String userInput = userInputHandler.getUserInput("ipv4");
     if (!userInput.isEmpty()) {
-      try {
-        address = userInput;  // TODO: check if user input is in valid server address format
-      } catch (Exception e) {
-        System.out.println("Input error.\n Using default server address " + DEFAULT_SEATRADE_SERVER_ADDRESS + ".");
-      }
+      address = userInput;
     } else {
-      System.out.println("No input.\nUsing default server address " + DEFAULT_SEATRADE_SERVER_ADDRESS + ".");
+      System.out.println("No input. Using default address " + address + ".");
     }
     return address;
   }

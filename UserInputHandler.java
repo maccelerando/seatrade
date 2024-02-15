@@ -1,5 +1,7 @@
 import java.util.Random;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class UserInputHandler {
 
@@ -59,6 +61,29 @@ public class UserInputHandler {
         processedInput = autoComplete.autoCompleteInput(userInput, inputSelectionStrings);
         if (!userInput.equals(processedInput)) {
           System.out.println("⚓ " + processedInput);
+        }
+        break;
+      case "ipv4":
+        // TODO
+        processedInput = "";
+        while (processedInput.isEmpty()) {
+          userInput = scanner.nextLine();
+          if (userInput.isEmpty()) {
+            processedInput = "";
+            break;
+          } else {
+            // check for IPv4 syntax
+            String ipv4Pattern = "^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$";
+            Pattern pattern = Pattern.compile(ipv4Pattern);
+            Matcher matcher = pattern.matcher(userInput);
+            if (matcher.matches()) {
+              processedInput = userInput;
+              break;
+            } else {
+              System.out.println("Wrong IPv4 format. Example: 127.0.0.1");
+              continue;
+            }
+          }
         }
         break;
       case "CompanyApp-SeaTrade":
