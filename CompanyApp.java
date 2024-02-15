@@ -8,99 +8,72 @@ import java.net.Socket;
 import java.util.Scanner;
 
 public class CompanyApp {
-  private static final String[] COMPANY_NAMES = new String[]{"OceanLink", "AquaMarine", "SeaVista", "Nautical", "BlueHorizon", "SeaSwift", "Neptune's", "WaveCrest", "SeaHarbor", "Maritime", "AquaTrade", "Oceanic", "SeaSail", "BlueWave", "Horizon", "SeaCurrent", "Marisource", "AquaMeridian", "NautiLink", "OceanCraft"};
   private static final String DEFAULT_SEATRADE_SERVER_ADDRESS = "localhost";
-  private static final String DEFAULT_SHIPAPP_ADDRESS = "localhost";
   private static final int DEFAULT_SEATRADE_PORT_NUMBER = 8150;
   private static final int DEFAULT_SHIPAPP_PORT_NUMBER = 8152;
   private static Scanner scanner = new Scanner(System.in);
   private static String userInput = "no-input";
   private static volatile boolean exit = false;
-  private static String[] inputSelectionStrings = new String[] {"register:", "getinfo:harbour", "getinfo:cargo", "exit"};
+  private static String companyName;
   private double credit = 0.0D;
-  private static AutoComplete autoComplete = new AutoComplete(inputSelectionStrings);
-  private static Communicator communicator;
+  private static Communicator communicatorSeaTrade;
+  private static UserInputHandler userInputHandler = new UserInputHandler(scanner);
 
   public static void main(String[] args) {
+    // database
     createDatabaseTables();
-    String seatradeServerAddress = setServerAddress("SeaTrade");
-    int portNr = setPortNumber();
-    String companyName = setCompanyName();
-    inputSelectionStrings[0] = inputSelectionStrings[0].concat(companyName);
-    establishConnection(seatradeServerAddress, portNr);
+
+    // initialize
+    String seaTradeServerAddress = setSeaTradeServerAddress();
+    int seaTradePortNumber = setPortNumber();
+    companyName = setCompanyName();
+    establishSeaTradeConnection(seaTradeServerAddress, seaTradePortNumber);
 
     // main routine
     while (!exit) {
       sendToSeaTrade();
     }
+    // program end
     cleanup();
     System.exit(0);
   }
 
   private static void sendToSeaTrade() {
-    System.out.println("Enter message to server. Suggestions: \n-> register:companyname\n-> getinfo:harbour\n-> getinfo:cargo\n-> exit");
-    String input = "default";
-
-    try {
-      input = scanner.nextLine();
-      if (!input.isEmpty()) {
-        input = autoComplete.autoCompleteInput(input);
-      } else {
-        input = "exit";
-      }
-    } catch (Exception e) {
-      System.out.println("Error with input: " + e.getMessage());
-    }
-    if (input.equals("exit")) {
+    userInput = userInputHandler.getUserInput("CompanyApp-SeaTrade");
+    if (userInput.equals(exit)) {
       exit = true;
     }
-    sendMessageToServer(input);
+    sendMessageToSeaTrade(userInput);
   }
 
-  private static void sendMessageToServer(String message) {
+  private static void sendMessageToSeaTrade(String message) {
     try {
-      communicator.getPrintWriter().println(message);
+      communicatorSeaTrade.getPrintWriter().println(message);
       System.out.println("Sent message to Server = " + message);
     } catch (Exception e) {
-      System.out.println("Error sendMessageToServer: " + e.getMessage());
+      System.out.println("Error sendMessageToSeaTrade: " + e.getMessage());
     }
-
   }
 
-  private static void establishConnection(String address, int portNumber) {
+  private static void establishSeaTradeConnection(String address, int portNumber) {
     try {
-      communicator = new Communicator(address, portNumber);
-      String serverMessage = inputSelectionStrings[0];
-      communicator.getPrintWriter().println(serverMessage);
+      communicatorSeaTrade = new Communicator(address, portNumber);
+      String serverMessage = "register:".concat(companyName);
+      communicatorSeaTrade.getPrintWriter().println(serverMessage);
       System.out.println("Sent message to Server = " + serverMessage);
     } catch (Exception e) {
       System.out.println("Error establishing connection with the server: " + e.getMessage());
     }
   }
 
-  // serverName should be "SeaTrade" or "ShipApp"
-  public static String setServerAddress(String serverName) {
-    String address = "";
-    switch (serverName) {
-    case "SeaTrade":
-      address = DEFAULT_SEATRADE_SERVER_ADDRESS;
-      break;
-    case "ShipApp":
-      address = DEFAULT_SHIPAPP_ADDRESS;
-      break;
-    default:
-      System.out.println("Error: SetServerAddress switch fall through to not reachable code");
-    }
-    System.out.println("Enter " + serverName + " IPv4 address. Default is " + address + ".");
-    String userInput = scanner.nextLine();
+  public static String setSeaTradeServerAddress() {
+    String address = DEFAULT_SEATRADE_SERVER_ADDRESS;
+    System.out.println("Enter SeaTrade IPv4 server address. Default is " + DEFAULT_SEATRADE_SERVER_ADDRESS + ".");
+    String userInput = userInputHandler.getUserInput("ipv4");
     if (!userInput.isEmpty()) {
-      try {
-        address = userInput;  // TODO: check if user input is in valid server address format
-      } catch (Exception e) {
-        System.out.println("Input error.\n Using default server address " + DEFAULT_SEATRADE_SERVER_ADDRESS + ".");
-      }
+      address = userInput;
     } else {
-      System.out.println("No input.\nUsing default server address " + DEFAULT_SEATRADE_SERVER_ADDRESS + ".");
+      System.out.println("No input. Using default address " + address + ".");
     }
     return address;
   }
@@ -108,44 +81,24 @@ public class CompanyApp {
   public static int setPortNumber() {
     int portNr = DEFAULT_SEATRADE_PORT_NUMBER;
     System.out.println("Enter port number. Default is " + portNr + ".");
-    String userInput = scanner.nextLine();
+    String userInput = userInputHandler.getUserInput("portNumber");
     if (!userInput.isEmpty()) {
-      try {
-        portNr = Integer.parseInt(userInput);
-        System.out.println("Port number = " + portNr);
-      } catch (NumberFormatException e) {
-        e.printStackTrace();
-      }
+      portNr = Integer.parseInt(userInput);
     } else {
-      System.out.println("No input. \nUsing default port number " + portNr + ".");
+      System.out.println("No input. Using default port number " + portNr + ".");
     }
-
     return portNr;
   }
 
   public static String setCompanyName() {
-    String companyName = COMPANY_NAMES[0];
-    System.out.println("Enter company name.");
-    try {
-      userInput = scanner.nextLine();
-      if (!userInput.isEmpty()) {
-        if (userInput.matches("\\d+")) {
-          int companyNameIndex = Integer.parseInt(userInput) % COMPANY_NAMES.length;
-          companyName = COMPANY_NAMES[companyNameIndex];
-        } else {
-          companyName = userInput;
-        }
-      }
-    } catch (Exception e) {
-      System.out.println("Error with user input.");
-    }
+    companyName = userInputHandler.getUserInput("companyName");
     return companyName;
   }
 
   public static void cleanup() {
     System.out.println("start cleanup");
-    if (communicator != null) {
-      communicator.cleanup();
+    if (communicatorSeaTrade != null) {
+      communicatorSeaTrade.cleanup();
     }
     if (scanner != null) {
       scanner.close();

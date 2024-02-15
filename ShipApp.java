@@ -8,17 +8,19 @@ public class ShipApp {
   private static final int DEFAULT_SEATRADE_PORT_NUMBER = 8151;
   private static final Scanner scanner = new Scanner(System.in);
   private static volatile boolean exit = false;
-  private static String userInput = "";
-  private static AutoComplete autoComplete = new AutoComplete();
+  private static String userInput = "no-input";
   private static Communicator communicatorSeaTrade;
   private static Communicator communicatorCompanyApp;
   private static UserInputHandler userInputHandler = new UserInputHandler(scanner);
-  private double seacoin = 0.0D;  // TODO: enhanced feature
+  private double seacoin = 0.0D;  // TODO: enhance feature
 
   private static final String[] inputSelectionStrings = new String[] {"launch:", "moveto:", "loadcargo", "unloadcargo", "exit"};
 
   public static void main(String[] args) {
+    // TODO move server address selction to userInputHandler
     String seatradeServerAddress = DEFAULT_SEATRADE_SERVER_ADDRESS;
+    // TODO move port number selection to userInputHandler
+
     // ship name
     String shipName = userInputHandler.getUserInput("shipName");
     // harbor name
@@ -33,11 +35,11 @@ public class ShipApp {
       sendToSeaTrade();
     }
 
-    // TODO cleanup
+    // TODO cleanup and exit
   }
 
   private static void sendToSeaTrade() {
-    userInput = userInputHandler.getUserInput("seaTrade");
+    userInput = userInputHandler.getUserInput("ShipApp-SeaTrade");
     if (userInput.equals("exit")) {
       exit = true;
     }
