@@ -23,11 +23,11 @@ public class CompanyApp {
   public static void main(String[] args) {
     createDatabaseTables();
 
-    String seatradeServerAddress = setSeaTradeServerAddress();
+    String seaTradeServerAddress = setSeaTradeServerAddress();
+    int seaTradePortNumber = setPortNumber();
 
-    int portNr = setPortNumber();
     companyName = setCompanyName();
-    establishSeaTradeConnection(seatradeServerAddress, portNr);
+    establishSeaTradeConnection(seaTradeServerAddress, seaTradePortNumber);
 
     // main routine
     while (!exit) {
@@ -80,18 +80,12 @@ public class CompanyApp {
   public static int setPortNumber() {
     int portNr = DEFAULT_SEATRADE_PORT_NUMBER;
     System.out.println("Enter port number. Default is " + portNr + ".");
-    String userInput = scanner.nextLine();
+    String userInput = userInputHandler.getUserInput("portNumber");
     if (!userInput.isEmpty()) {
-      try {
-        portNr = Integer.parseInt(userInput);
-        System.out.println("Port number = " + portNr);
-      } catch (NumberFormatException e) {
-        e.printStackTrace();
-      }
+      portNr = Integer.parseInt(userInput);
     } else {
-      System.out.println("No input. \nUsing default port number " + portNr + ".");
+      System.out.println("No input. Using default port number " + portNr + ".");
     }
-
     return portNr;
   }
 

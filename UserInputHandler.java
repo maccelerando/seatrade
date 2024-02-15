@@ -72,7 +72,7 @@ public class UserInputHandler {
             processedInput = "";
             break;
           } else {
-            // check for IPv4 syntax
+            // check for correct IPv4 syntax
             String ipv4Pattern = "^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$";
             Pattern pattern = Pattern.compile(ipv4Pattern);
             Matcher matcher = pattern.matcher(userInput);
@@ -81,6 +81,28 @@ public class UserInputHandler {
               break;
             } else {
               System.out.println("Wrong IPv4 format. Example: 127.0.0.1");
+              continue;
+            }
+          }
+        }
+        break;
+      case "portNumber":
+        processedInput = "";
+        while (processedInput.isEmpty()) {
+          userInput = scanner.nextLine();
+          if (userInput.isEmpty()) {
+            processedInput = "";
+            break;
+          } else {
+            // check for correct port number syntax
+            try {
+              int portNumber = Integer.parseInt(userInput);
+              if (portNumber >= 0 && portNumber <= 65535) {
+                processedInput = userInput;
+                break;
+              }
+            } catch (NumberFormatException e) {
+              System.out.println("Wrong format. Enter a number between 0 and 65535.");
               continue;
             }
           }
