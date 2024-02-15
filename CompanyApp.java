@@ -8,7 +8,6 @@ import java.net.Socket;
 import java.util.Scanner;
 
 public class CompanyApp {
-  private static final String[] COMPANY_NAMES = new String[]{"OceanLink", "AquaMarine", "SeaVista", "Nautical", "BlueHorizon", "SeaSwift", "Neptune's", "WaveCrest", "SeaHarbor", "Maritime", "AquaTrade", "Oceanic", "SeaSail", "BlueWave", "Horizon", "SeaCurrent", "Marisource", "AquaMeridian", "NautiLink", "OceanCraft"};
   private static final String DEFAULT_SEATRADE_SERVER_ADDRESS = "localhost";
   private static final int DEFAULT_SEATRADE_PORT_NUMBER = 8150;
   private static final int DEFAULT_SHIPAPP_PORT_NUMBER = 8152;
@@ -25,7 +24,7 @@ public class CompanyApp {
 
     String seaTradeServerAddress = setSeaTradeServerAddress();
     int seaTradePortNumber = setPortNumber();
-
+    // wip
     companyName = setCompanyName();
     establishSeaTradeConnection(seaTradeServerAddress, seaTradePortNumber);
 
@@ -90,21 +89,7 @@ public class CompanyApp {
   }
 
   public static String setCompanyName() {
-    String companyName = COMPANY_NAMES[0];
-    System.out.println("Enter company name.");
-    try {
-      userInput = scanner.nextLine();
-      if (!userInput.isEmpty()) {
-        if (userInput.matches("\\d+")) {
-          int companyNameIndex = Integer.parseInt(userInput) % COMPANY_NAMES.length;
-          companyName = COMPANY_NAMES[companyNameIndex];
-        } else {
-          companyName = userInput;
-        }
-      }
-    } catch (Exception e) {
-      System.out.println("Error with user input.");
-    }
+    companyName = userInputHandler.getUserInput("companyName");
     return companyName;
   }
 
