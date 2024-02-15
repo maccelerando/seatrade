@@ -7,7 +7,9 @@ public class UserInputHandler {
   private final String[] DEFAULT_HARBOR_SYMBOLS = new String[] {"🏔️ ", "🏰", "🌅", "🕌", "🏝️ ", "🚢", "🌊", "🚤", "🗽", "🌄"};
   private final String[] DEFAULT_SHIP_NAMES = new String[] {"AquaArrowCargo", "AquaBreezeTransport", "AquaGliderCarrier", "AquaGlowCarrier", "AquaLineTrader", "AquaRiderClipper", "AquaSailTransport", "AquaVistaClipper", "BlueBreezeFreighter", "BlueHavenFreighter", "BlueHorizonFreighter", "BlueMarlinTransporter", "BlueTideVoyager", "BlueVoyageMerchant", "CeruleanClipper", "CeruleanCruiseClipper", "DolphinDanceExplorer", "EmeraldEagleExpress", "FleetFeatherFreighter", "GoldenGaleGlider", "HarmonyHarborHauler", "HorizonCruiseTrader", "HorizonHarborTrader", "HorizonHauler", "HorizonSailCargo", "HorizonSwayTrader", "IvoryIsleExplorer", "JadeJourneyJet", "JubilantJourneyFreighter", "KaleidoKiteClipper", "LunarLagoonLiner", "MarineMistMerchant", "MarisMerchant", "MarisTradeClipper", "MaritimeMajesty", "MaritimeWhirlFreighter", "NautiQuestExplorer", "NautiVoyager", "NautiWaveExplorer", "NauticalLegacyCarrier", "NauticalNebulaNavigator", "Neptune'sCrestShip", "Neptune'sGrace", "Neptune'sLegacy", "Neptune'sPrideShip", "OceanCraftOdyssey", "OceanJourneyVessel", "OceanNavigator", "OceanOdysseyOrbit", "OceanPioneer", "OceanVanguard", "OceanVistaMariner", "PearlPreludePilot", "QuantumQuestQuasar", "QuasarQuestVoyager", "RoyalRippleRunner", "SapphireSkySail", "SeaBreezeClipper", "SeaCrestExplorer", "SeaCrestExpress", "SeaGliderExpress", "SeaHarmonyExplorer", "SeaLoomCarrier", "SeaLinkExpress", "SeaSereneNavigator", "SeaSailEmpress", "SeaSproutVoyager", "SeaStarVoyager", "SeaVoyageQuest", "TitanicTideTransport", "TradeTideMariner", "TradeWavesMariner", "TradeWindsDiscovery", "TradeWindsVoyager", "UtopiaUmbrellaClipper", "VividVoyageVessel", "WaveChaseTransport", "WaveCrestTrader", "WaveQuestVoyager", "WaveRunnerFreighter", "WaveSailMariner", "WaveWhispererWanderer", "XanaduXplorer", "XtraordinaryExplorer", "YellowYachtYonder", "ZephyrZephyrClipper", "ZealousZephyrZiggurat"};
   private final String[] SA_ST_COMMANDS = new String[] {"launch:", "moveto:", "loadcargo", "unloadcargo", "exit"};
-  private final String[] SA_ST_SYMBOLS = new String[] {"🚢", "⚓", "📦", "📦", "🚪"};
+  private final String[] SA_ST_SYMBOLS  = new String[] {"🚢", "⚓", "📦", "📦", "🚪"};
+  private final String[] CA_ST_COMMANDS = new String[] {"register:", "getinfo:harbour", "getinfo:cargo", "exit"};
+  private final String[] CA_ST_SYMBOLS  = new String[] {"🏢", "🏭", "🛃", "🚪"};
 
   private AutoComplete autoComplete;
   private Random random;
@@ -59,7 +61,22 @@ public class UserInputHandler {
           System.out.println("⚓ " + processedInput);
         }
         break;
-      case "seaTrade":
+      case "CompanyApp-SeaTrade":
+        while (processedInput.isEmpty()) {
+          System.out.println("Enter message to SeaTrade.\n-> getinfo:harbour\n-> getinfo:cargo\n-> exit");
+          userInput = scanner.nextLine();
+          if (userInput.isEmpty()) {
+            System.out.println("No input.");
+            continue;
+          } else {
+            processedInput = autoComplete.autoCompleteInput(userInput, CA_ST_COMMANDS);
+          }
+          switch (processedInput) {
+            // TODO
+          }
+        }
+        break;
+      case "ShipApp-SeaTrade":
         while (processedInput.isEmpty()) {
           System.out.println("Enter message to SeaTrade.\n⚓ moveto\n📦 loadcargo\n📦 unloadcargo\n🚪 exit");
           userInput = scanner.nextLine();
@@ -101,6 +118,7 @@ public class UserInputHandler {
         break;
       default:
         System.out.println("Error: UserInputHandler getUserInput() unreachable code");
+        return "exit";
     }
     return processedInput;
   }

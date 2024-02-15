@@ -16,18 +16,17 @@ public class CompanyApp {
   private static Scanner scanner = new Scanner(System.in);
   private static String userInput = "no-input";
   private static volatile boolean exit = false;
-  private static String[] inputSelectionStrings = new String[] {"register:", "getinfo:harbour", "getinfo:cargo", "exit"};
+  private static String companyName;
   private double credit = 0.0D;
-  private static AutoComplete autoComplete = new AutoComplete(inputSelectionStrings);
-  private static Communicator communicator;
+  private static Communicator communicatorSeaTrade;
+  private static UserInputHandler userInputHandler = new UserInputHandler(scanner);
 
   public static void main(String[] args) {
     createDatabaseTables();
     String seatradeServerAddress = setServerAddress("SeaTrade");
     int portNr = setPortNumber();
-    String companyName = setCompanyName();
-    inputSelectionStrings[0] = inputSelectionStrings[0].concat(companyName);
-    establishConnection(seatradeServerAddress, portNr);
+    companyName = setCompanyName();
+    establishSeaTradeConnection(seatradeServerAddress, portNr);
 
     // main routine
     while (!exit) {
@@ -38,40 +37,27 @@ public class CompanyApp {
   }
 
   private static void sendToSeaTrade() {
-    System.out.println("Enter message to server. Suggestions: \n-> register:companyname\n-> getinfo:harbour\n-> getinfo:cargo\n-> exit");
-    String input = "default";
-
-    try {
-      input = scanner.nextLine();
-      if (!input.isEmpty()) {
-        input = autoComplete.autoCompleteInput(input);
-      } else {
-        input = "exit";
-      }
-    } catch (Exception e) {
-      System.out.println("Error with input: " + e.getMessage());
-    }
-    if (input.equals("exit")) {
+    userInput = userInputHandler.getUserInput("CompanyApp-SeaTrade");
+    if (userInput.equals(exit)) {
       exit = true;
     }
-    sendMessageToServer(input);
+    sendMessageToSeaTrade(userInput);
   }
 
-  private static void sendMessageToServer(String message) {
+  private static void sendMessageToSeaTrade(String message) {
     try {
-      communicator.getPrintWriter().println(message);
+      communicatorSeaTrade.getPrintWriter().println(message);
       System.out.println("Sent message to Server = " + message);
     } catch (Exception e) {
-      System.out.println("Error sendMessageToServer: " + e.getMessage());
+      System.out.println("Error sendMessageToSeaTrade: " + e.getMessage());
     }
-
   }
 
-  private static void establishConnection(String address, int portNumber) {
+  private static void establishSeaTradeConnection(String address, int portNumber) {
     try {
-      communicator = new Communicator(address, portNumber);
-      String serverMessage = inputSelectionStrings[0];
-      communicator.getPrintWriter().println(serverMessage);
+      communicatorSeaTrade = new Communicator(address, portNumber);
+      String serverMessage = "register:".concat(companyName);
+      communicatorSeaTrade.getPrintWriter().println(serverMessage);
       System.out.println("Sent message to Server = " + serverMessage);
     } catch (Exception e) {
       System.out.println("Error establishing connection with the server: " + e.getMessage());
@@ -144,8 +130,8 @@ public class CompanyApp {
 
   public static void cleanup() {
     System.out.println("start cleanup");
-    if (communicator != null) {
-      communicator.cleanup();
+    if (communicatorSeaTrade != null) {
+      communicatorSeaTrade.cleanup();
     }
     if (scanner != null) {
       scanner.close();
