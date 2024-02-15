@@ -95,9 +95,7 @@ public class UserInputHandler {
             continue;
           } else {
             processedInput = autoComplete.autoCompleteInput(userInput, CA_ST_COMMANDS);
-          }
-          switch (processedInput) {
-            // TODO
+            // TODO check for "register:"
           }
         }
         break;

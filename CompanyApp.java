@@ -10,7 +10,6 @@ import java.util.Scanner;
 public class CompanyApp {
   private static final String[] COMPANY_NAMES = new String[]{"OceanLink", "AquaMarine", "SeaVista", "Nautical", "BlueHorizon", "SeaSwift", "Neptune's", "WaveCrest", "SeaHarbor", "Maritime", "AquaTrade", "Oceanic", "SeaSail", "BlueWave", "Horizon", "SeaCurrent", "Marisource", "AquaMeridian", "NautiLink", "OceanCraft"};
   private static final String DEFAULT_SEATRADE_SERVER_ADDRESS = "localhost";
-  private static final String DEFAULT_SHIPAPP_ADDRESS = "localhost";
   private static final int DEFAULT_SEATRADE_PORT_NUMBER = 8150;
   private static final int DEFAULT_SHIPAPP_PORT_NUMBER = 8152;
   private static Scanner scanner = new Scanner(System.in);
@@ -24,7 +23,6 @@ public class CompanyApp {
   public static void main(String[] args) {
     createDatabaseTables();
 
-    // new code
     String seatradeServerAddress = setSeaTradeServerAddress();
 
     int portNr = setPortNumber();
