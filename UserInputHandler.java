@@ -25,7 +25,6 @@ public class UserInputHandler {
     this.autoComplete = new AutoComplete();
     this.random = new Random();
     this.scanner = scanner;
-    this.userInput = userInput;
   }
 
   // TODO String kindOfInput should only be things like "shipNames", "harborNames", ... maybe there is a better way for this like an enum for example

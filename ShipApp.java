@@ -7,7 +7,7 @@ public class ShipApp {
   private static final int DEFAULT_COMPANYAPP_PORT_NUMBER = 8152;
   private static final int DEFAULT_SEATRADE_PORT_NUMBER = 8151;
   private static final Scanner scanner = new Scanner(System.in);
-  private static volatile boolean exit = false;
+  private static volatile boolean exit = false;  // TODO implement functionality
   private static String userInput = "no-input";
   private static Communicator communicatorSeaTrade;
   private static Communicator communicatorCompanyApp;

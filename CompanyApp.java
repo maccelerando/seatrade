@@ -40,7 +40,7 @@ public class CompanyApp {
 
   private static void sendToSeaTrade() {
     userInput = userInputHandler.getUserInput("CompanyApp-SeaTrade");
-    if (userInput.equals(exit)) {
+    if (userInput.equals("exit")) {
       exit = true;
     }
     sendMessageToSeaTrade(userInput);
