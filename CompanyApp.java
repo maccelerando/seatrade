@@ -18,6 +18,7 @@ public class CompanyApp {
   private double credit = 0.0D;
   private static Communicator communicatorSeaTrade;
   private static UserInputHandler userInputHandler = new UserInputHandler(scanner);
+  private static CompanyServer companyServer;
 
   public static void main(String[] args) {
     // database
@@ -28,6 +29,9 @@ public class CompanyApp {
     int seaTradePortNumber = setPortNumber();
     companyName = setCompanyName();
     establishSeaTradeConnection(seaTradeServerAddress, seaTradePortNumber);
+
+    companyServer = new CompanyServer(8152);
+    companyServer.run();
 
     // main routine
     while (!exit) {

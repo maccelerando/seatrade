@@ -1,5 +1,9 @@
 import java.util.Scanner;
 
+import java.io.IOException;
+import java.net.Socket;
+import java.net.UnknownHostException;
+
 public class ShipApp {
 
   private static final String DEFAULT_COMPANYAPP_SERVER_ADDRESS = "localhost";
@@ -29,6 +33,17 @@ public class ShipApp {
       harborNameLaunch = userInputHandler.getUserInput("harborName");
     }
     establishSeaTradeConnection(seatradeServerAddress, DEFAULT_SEATRADE_PORT_NUMBER, shipName, harborNameLaunch);
+
+
+    // connection CompanyApp
+    try {
+      Socket socket = new Socket("localhost", 8152);
+    } catch (UnknownHostException e) {
+      System.out.println("socket problem " + e.getMessage());
+    } catch (IOException e) {
+      System.out.println("socket problem " + e.getMessage());
+    }
+
 
     // main routine
     while (!exit) {
