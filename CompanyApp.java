@@ -30,6 +30,7 @@ public class CompanyApp {
     companyName = setCompanyName();
     establishSeaTradeConnection(seaTradeServerAddress, seaTradePortNumber);
 
+    // company server
     companyServer = new CompanyServer(8152);
     companyServer.run();
 

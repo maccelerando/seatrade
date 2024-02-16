@@ -4,17 +4,17 @@ import java.io.InputStreamReader;
 import java.net.Socket;
 
 public class Listener extends Thread {
-  int port = 8150;
+  int port;
   String input = "nothing";
   BufferedReader inputStream = null;
 
-  Listener(int var1, Socket socket) {
-    this.port = var1;
+  Listener(int portNumber, Socket socket) {
+    this.port = portNumber;
 
     try {
       this.inputStream = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-    } catch (IOException var4) {
-      System.out.println("Error Thread inputStream initialisation " + var4.getMessage());
+    } catch (IOException e) {
+      System.out.println("Error Thread inputStream initialisation " + e.getMessage());
     }
 
   }
@@ -30,9 +30,9 @@ public class Listener extends Thread {
           break;
         }
         System.out.println("Thread answer from server = " + this.input);
-      } catch (IOException var3) {
+      } catch (IOException e) {
         if (!interrupted()) {
-          System.out.println("Error Thread inputStream.readLine() " + var3.getMessage());
+          System.out.println("Error Thread inputStream.readLine() " + e.getMessage());
         }
       }
     }
@@ -40,8 +40,8 @@ public class Listener extends Thread {
     if (this.inputStream != null) {
       try {
         this.inputStream.close();
-      } catch (IOException var2) {
-        System.out.println("Error in thread inputStream.close() " + var2.getMessage());
+      } catch (IOException e) {
+        System.out.println("Error in thread inputStream.close() " + e.getMessage());
       }
     }
     System.out.println("Listener interrupted");

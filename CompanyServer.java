@@ -9,6 +9,7 @@ public class CompanyServer extends Thread {
   private ServerSocket serverSocket;
   private HashMap<String, Socket> shipAppSockets;
   private boolean exit;
+  // console output from this server has different color for better differentiation
   public static final String ANSI_PURPLE = "\u001B[35m";
   public static final String ANSI_RESET = "\u001B[0m";
 

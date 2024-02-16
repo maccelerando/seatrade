@@ -32,10 +32,16 @@ public class ShipApp {
     while (harborNameLaunch.isEmpty()) {
       harborNameLaunch = userInputHandler.getUserInput("harborName");
     }
+
+    establishCompanyAppConnection(DEFAULT_COMPANYAPP_SERVER_ADDRESS, DEFAULT_COMPANYAPP_PORT_NUMBER, shipName);
+
     establishSeaTradeConnection(seatradeServerAddress, DEFAULT_SEATRADE_PORT_NUMBER, shipName, harborNameLaunch);
 
 
     // connection CompanyApp
+    // second try
+
+    // first try
     try {
       Socket socket = new Socket("localhost", 8152);
     } catch (UnknownHostException e) {
@@ -69,23 +75,29 @@ public class ShipApp {
     }
   }
 
-  public static void establishSeaTradeConnection(String address, int portNumber, String companyName, String harborName) {
+  // example: launch:companyname:harbourname:shipname
+  public static void establishSeaTradeConnection(String address, int portNumber, String shipName, String harborName) {
     try {
       communicatorSeaTrade = new Communicator(address, portNumber);
       // TODO: make company chooseable
-      String serverMessage = inputSelectionStrings[0] + "Quickstart:" + harborName + ":" + companyName;
-      communicatorSeaTrade.getPrintWriter().println(serverMessage);
-      System.out.println("Sent message to Server = " + serverMessage);
+      String messageSeaTrade = inputSelectionStrings[0] + "Quickstart:" + harborName + ":" + shipName;
+      communicatorSeaTrade.getPrintWriter().println(messageSeaTrade);
+      System.out.println("Sent message to Server = " + messageSeaTrade);
     } catch (Exception e) {
       System.out.println("Error establishSeaTradeConnection " + e.getMessage());
     }
   }
 
-//  public static void establishCompanyAppConnection(String address, int portNumber) {
-//    try {
-//      communicatorCompanyApp = new Communicator(address, portNumber);
-//      String messageCompanyApp =
-//    }
-//  }
+  // example: register:shipname
+  public static void establishCompanyAppConnection(String address, int portNumber, String shipName) {
+    try {
+      communicatorCompanyApp = new Communicator(address, portNumber);
+      String messageCompanyApp = "register:shipName";
+      communicatorCompanyApp.getPrintWriter().println(messageCompanyApp);
+      System.out.println("Sent message to CompanyApp = " + messageCompanyApp);
+    } catch (Exception e) {
+      System.out.println("Error establishCompanyAppConnection " + e.getMessage());
+    }
+  }
 
 }
