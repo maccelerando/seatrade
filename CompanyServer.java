@@ -26,14 +26,30 @@ public class CompanyServer extends Thread {
 
   @Override
   public void run() {
-    printlnPurple("Server is waiting for client connection on port " + portNumber);
+    printlnPurple("Server is waiting for client connection on port " + portNumber + ".");
 
-    try {
-      shipAppSockets.put("socket1", serverSocket.accept());
-    } catch (IOException e) {
-      printlnPurple("Error: socket1 not put " + e.getMessage());
+    // new
+    while (true) {
+      try {
+        Socket clientSocket = serverSocket.accept();
+        printlnPurple("client has connected");
+        String clientAddress = clientSocket.getInetAddress().toString().substring(1);
+        shipAppSockets.put(clientAddress, clientSocket);
+        printlnPurple("put client in hash table");
+        new Thread(() -> {
+          printlnPurple("still running1");
+          printlnPurple("client address = " + clientAddress);
+          printlnPurple("client port = " + clientSocket.getPort());
+          Communicator communicator = new Communicator(clientSocket, clientAddress, clientSocket.getPort());
+          printlnPurple("still running2");
+          communicator.getPrintWriter().println("hallo test1");
+          printlnPurple("still running3");
+        }).start();
+      } catch (IOException e) {
+        printlnPurple("Error: " + e.getMessage());
+        e.printStackTrace();
+      }
     }
-    printlnPurple(shipAppSockets.get("socket1").toString());
 
   }
 

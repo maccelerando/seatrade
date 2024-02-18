@@ -21,7 +21,7 @@ public class ShipApp {
   private static final String[] inputSelectionStrings = new String[] {"launch:", "moveto:", "loadcargo", "unloadcargo", "exit"};
 
   public static void main(String[] args) {
-    // TODO move server address selction to userInputHandler
+    // TODO move server address selection to userInputHandler
     String seatradeServerAddress = DEFAULT_SEATRADE_SERVER_ADDRESS;
     // TODO move port number selection to userInputHandler
 
@@ -32,10 +32,12 @@ public class ShipApp {
     while (harborNameLaunch.isEmpty()) {
       harborNameLaunch = userInputHandler.getUserInput("harborName");
     }
+    // companyName
+    String companyName = userInputHandler.getUserInput("companyName");
 
     establishCompanyAppConnection(DEFAULT_COMPANYAPP_SERVER_ADDRESS, DEFAULT_COMPANYAPP_PORT_NUMBER, shipName);
 
-    establishSeaTradeConnection(seatradeServerAddress, DEFAULT_SEATRADE_PORT_NUMBER, shipName, harborNameLaunch);
+    establishSeaTradeConnection(seatradeServerAddress, DEFAULT_SEATRADE_PORT_NUMBER, companyName, harborNameLaunch, shipName);
 
 
     // connection CompanyApp
@@ -76,11 +78,11 @@ public class ShipApp {
   }
 
   // example: launch:companyname:harbourname:shipname
-  public static void establishSeaTradeConnection(String address, int portNumber, String shipName, String harborName) {
+  public static void establishSeaTradeConnection(String address, int portNumber, String companyName, String harborName, String shipName) {
     try {
       communicatorSeaTrade = new Communicator(address, portNumber);
       // TODO: make company chooseable
-      String messageSeaTrade = inputSelectionStrings[0] + "Quickstart:" + harborName + ":" + shipName;
+      String messageSeaTrade = inputSelectionStrings[0] + companyName  + ":" + harborName + ":" + shipName;
       communicatorSeaTrade.getPrintWriter().println(messageSeaTrade);
       System.out.println("Sent message to Server = " + messageSeaTrade);
     } catch (Exception e) {
@@ -92,7 +94,7 @@ public class ShipApp {
   public static void establishCompanyAppConnection(String address, int portNumber, String shipName) {
     try {
       communicatorCompanyApp = new Communicator(address, portNumber);
-      String messageCompanyApp = "register:shipName";
+      String messageCompanyApp = "register:" + shipName;
       communicatorCompanyApp.getPrintWriter().println(messageCompanyApp);
       System.out.println("Sent message to CompanyApp = " + messageCompanyApp);
     } catch (Exception e) {

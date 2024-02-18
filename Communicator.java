@@ -26,6 +26,23 @@ public class Communicator {
       e.printStackTrace();
     }
   }
+  
+  public Communicator(Socket socket, String address, int portNumber) {
+    try {
+      this.socket = socket;
+      System.out.println("Connected to server at address " + address + " on port number " + portNumber);
+      this.outputStream = socket.getOutputStream();
+      this.listener = new Listener(portNumber, socket);
+      listener.start();
+      this.printWriter = new PrintWriter(outputStream, true);
+    } catch (UnknownHostException e) {
+      System.out.println("ERROR: Communicator() " + e.getMessage());
+      e.printStackTrace();
+    } catch (IOException e) {
+      System.out.println("ERROR: Communicator() " + e.getMessage());
+      e.printStackTrace();
+    }
+  }
 
   public PrintWriter getPrintWriter() {
     return printWriter;
