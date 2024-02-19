@@ -22,7 +22,7 @@ public class ShipApp {
 
   public static void main(String[] args) {
     // TODO move server address selection to userInputHandler
-    String seatradeServerAddress = DEFAULT_SEATRADE_SERVER_ADDRESS;
+    String seatradeServerAddress = setSeaTradeServerAddress();
     // TODO move port number selection to userInputHandler
 
     // ship name
@@ -100,6 +100,18 @@ public class ShipApp {
     } catch (Exception e) {
       System.out.println("Error establishCompanyAppConnection " + e.getMessage());
     }
+  }
+  
+  public static String setSeaTradeServerAddress() {
+    String address = DEFAULT_SEATRADE_SERVER_ADDRESS;
+    System.out.println("Enter SeaTrade IPv4 server address. Default is " + DEFAULT_SEATRADE_SERVER_ADDRESS + ".");
+    String userInput = userInputHandler.getUserInput("ipv4");
+    if (!userInput.isEmpty()) {
+      address = userInput;
+    } else {
+      System.out.println("No input. Using default address " + address + ".");
+    }
+    return address;
   }
 
 }
