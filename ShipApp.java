@@ -22,8 +22,7 @@ public class ShipApp {
 
   public static void main(String[] args) {
 
-    String seatradeServerAddress = setSeaTradeServerAddress();
-    // TODO move port number selection to userInputHandler
+    String seatradeServerAddress = setServerAddress("SeaTrade");
     int seaTradePortNumber = setPortNumber();
     // ship name
     String shipName = userInputHandler.getUserInput("shipName");
@@ -35,7 +34,9 @@ public class ShipApp {
     // companyName
     String companyName = userInputHandler.getUserInput("companyName");
     if (!companyName.equals("Quickstart")) {
-      establishCompanyAppConnection(DEFAULT_COMPANYAPP_SERVER_ADDRESS, DEFAULT_COMPANYAPP_PORT_NUMBER, shipName);
+      String companyAppServerAddress = setServerAddress("CompanyApp");
+      int companyAppPortNumber = setPortNumber();
+      establishCompanyAppConnection(companyAppServerAddress, companyAppPortNumber, shipName);
     }
     establishSeaTradeConnection(seatradeServerAddress, seaTradePortNumber, companyName, harborNameLaunch, shipName);
 
@@ -102,9 +103,16 @@ public class ShipApp {
     }
   }
   
-  public static String setSeaTradeServerAddress() {
-    String address = DEFAULT_SEATRADE_SERVER_ADDRESS;
-    System.out.println("Enter SeaTrade IPv4 server address. Default is " + DEFAULT_SEATRADE_SERVER_ADDRESS + ".");
+  public static String setServerAddress(String serverName) {
+    String address = "";
+    if (serverName.equals("SeaTrade")) {
+      address = DEFAULT_SEATRADE_SERVER_ADDRESS;
+    } else if (serverName.equals("CompanyApp")) {
+      address = DEFAULT_COMPANYAPP_SERVER_ADDRESS;
+    } else {
+      System.out.println("Error: setServerAddress invalid usecase");
+    }
+    System.out.println("Enter " + serverName + " IPv4 server address. Default is " + DEFAULT_SEATRADE_SERVER_ADDRESS + ".");
     String userInput = userInputHandler.getUserInput("ipv4");
     if (!userInput.isEmpty()) {
       address = userInput;
