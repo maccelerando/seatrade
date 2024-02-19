@@ -35,15 +35,9 @@ public class CompanyServer extends Thread {
         printlnPurple("client has connected");
         String clientAddress = clientSocket.getInetAddress().toString().substring(1);
         shipAppSockets.put(clientAddress, clientSocket);
-        printlnPurple("put client in hash table");
         new Thread(() -> {
-          printlnPurple("still running1");
-          printlnPurple("client address = " + clientAddress);
-          printlnPurple("client port = " + clientSocket.getPort());
           Communicator communicator = new Communicator(clientSocket, clientAddress, clientSocket.getPort());
-          printlnPurple("still running2");
-          communicator.getPrintWriter().println("hallo test1");
-          printlnPurple("still running3");
+          communicator.getPrintWriter().println(ANSI_PURPLE + "Connection successfull." + ANSI_RESET);
         }).start();
       } catch (IOException e) {
         printlnPurple("Error: " + e.getMessage());
