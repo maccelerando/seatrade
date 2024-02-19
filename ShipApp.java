@@ -21,10 +21,10 @@ public class ShipApp {
   private static final String[] inputSelectionStrings = new String[] {"launch:", "moveto:", "loadcargo", "unloadcargo", "exit"};
 
   public static void main(String[] args) {
-    // TODO move server address selection to userInputHandler
+
     String seatradeServerAddress = setSeaTradeServerAddress();
     // TODO move port number selection to userInputHandler
-
+    int seaTradePortNumber = setPortNumber();
     // ship name
     String shipName = userInputHandler.getUserInput("shipName");
     // harbor name
@@ -34,10 +34,10 @@ public class ShipApp {
     }
     // companyName
     String companyName = userInputHandler.getUserInput("companyName");
-
-    establishCompanyAppConnection(DEFAULT_COMPANYAPP_SERVER_ADDRESS, DEFAULT_COMPANYAPP_PORT_NUMBER, shipName);
-
-    establishSeaTradeConnection(seatradeServerAddress, DEFAULT_SEATRADE_PORT_NUMBER, companyName, harborNameLaunch, shipName);
+    if (!companyName.equals("Quickstart")) {
+      establishCompanyAppConnection(DEFAULT_COMPANYAPP_SERVER_ADDRESS, DEFAULT_COMPANYAPP_PORT_NUMBER, shipName);
+    }
+    establishSeaTradeConnection(seatradeServerAddress, seaTradePortNumber, companyName, harborNameLaunch, shipName);
 
 
     // connection CompanyApp
@@ -112,6 +112,18 @@ public class ShipApp {
       System.out.println("No input. Using default address " + address + ".");
     }
     return address;
+  }
+  
+  public static int setPortNumber() {
+    int portNr = DEFAULT_SEATRADE_PORT_NUMBER;
+    System.out.println("Enter port number. Default is " + portNr + ".");
+    String userInput = userInputHandler.getUserInput("portNumber");
+    if (!userInput.isEmpty()) {
+      portNr = Integer.parseInt(userInput);
+    } else {
+      System.out.println("No input. Using default port number " + portNr + ".");
+    }
+    return portNr;
   }
 
 }
