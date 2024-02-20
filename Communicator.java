@@ -47,6 +47,10 @@ public class Communicator {
   public PrintWriter getPrintWriter() {
     return printWriter;
   }
+  
+  public Listener getListener() {
+    return listener;
+  }
 
   public void cleanup() {
     System.out.println("start Communicator cleanup");

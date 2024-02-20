@@ -16,7 +16,6 @@ public class Listener extends Thread {
     } catch (IOException e) {
       System.out.println("Error Thread inputStream initialisation " + e.getMessage());
     }
-
   }
 
   public void run() {
@@ -45,5 +44,13 @@ public class Listener extends Thread {
       }
     }
     System.out.println("Listener interrupted");
+  }
+  
+  public String getInput() {
+    return input;
+  }
+  
+  public void resetInput() {
+    input = "";
   }
 }

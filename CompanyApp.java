@@ -15,7 +15,7 @@ public class CompanyApp {
   private static String userInput = "no-input";
   private static volatile boolean exit = false;
   private static String companyName;
-  private double credit = 0.0D;
+  private static double credit = 0.0D;
   private static Communicator communicatorSeaTrade;
   private static UserInputHandler userInputHandler = new UserInputHandler(scanner);
   private static CompanyServer companyServer;
@@ -41,6 +41,17 @@ public class CompanyApp {
     // program end
     cleanup();
     System.exit(0);
+  }
+  
+  private static void processInputFromSeaTrade(String input) {
+    // TODO process input
+    String[] processedString = input.split(":");
+    switch (processedString[0]) {
+    case "registered":
+      credit = Double.parseDouble(processedString[2]);
+      // TODO add update database here
+      break;
+    }
   }
 
   private static void sendToSeaTrade() {
@@ -69,6 +80,18 @@ public class CompanyApp {
     } catch (Exception e) {
       System.out.println("Error establishing connection with the server: " + e.getMessage());
     }
+    //
+    new Thread(() -> {
+      String input = "";
+      while(!exit) {
+        input = communicatorSeaTrade.getListener().getInput();
+        if (!input.isEmpty()) {
+          communicatorSeaTrade.getListener().resetInput();
+          processInputFromSeaTrade(input);
+        }
+      }
+      // TODO interrupt this thread here
+    });
   }
 
   public static String setSeaTradeServerAddress() {

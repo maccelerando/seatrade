@@ -16,7 +16,7 @@ public class ShipApp {
   private static Communicator communicatorSeaTrade;
   private static Communicator communicatorCompanyApp;
   private static UserInputHandler userInputHandler = new UserInputHandler(scanner);
-  private double seacoin = 0.0D;  // TODO: enhance feature
+  private double credit = 0.0D;  // TODO: enhance feature
 
   private static final String[] inputSelectionStrings = new String[] {"launch:", "moveto:", "loadcargo", "unloadcargo", "exit"};
 
