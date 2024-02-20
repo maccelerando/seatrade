@@ -88,7 +88,7 @@ public class UserInputHandler {
             processedInput = "";
             break;
           } else {
-            // check for correct IPv4 syntax
+            // regular expression check for correct IPv4 syntax
             String ipv4Pattern = "^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$";
             Pattern pattern = Pattern.compile(ipv4Pattern);
             Matcher matcher = pattern.matcher(userInput);

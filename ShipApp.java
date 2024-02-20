@@ -31,7 +31,7 @@ public class ShipApp {
     while (harborNameLaunch.isEmpty()) {
       harborNameLaunch = userInputHandler.getUserInput("harborName");
     }
-    // companyName
+    // company
     String companyName = userInputHandler.getUserInput("companyName");
     if (!companyName.equals("Quickstart")) {
       String companyAppServerAddress = setServerAddress("CompanyApp");
@@ -39,20 +39,6 @@ public class ShipApp {
       establishCompanyAppConnection(companyAppServerAddress, companyAppPortNumber, shipName);
     }
     establishSeaTradeConnection(seatradeServerAddress, seaTradePortNumber, companyName, harborNameLaunch, shipName);
-
-
-    // connection CompanyApp
-    // second try
-
-    // first try
-    try {
-      Socket socket = new Socket("localhost", 8152);
-    } catch (UnknownHostException e) {
-      System.out.println("socket problem " + e.getMessage());
-    } catch (IOException e) {
-      System.out.println("socket problem " + e.getMessage());
-    }
-
 
     // main routine
     while (!exit) {
