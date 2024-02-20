@@ -8,7 +8,7 @@ public class CompanyServer extends Thread {
   private int portNumber;
   private ServerSocket serverSocket;
   private HashMap<String, Socket> shipAppSockets;
-  private boolean exit;
+  private boolean exit = false;
   // console output from this server has different color for better differentiation
   public static final String ANSI_PURPLE = "\u001B[35m";
   public static final String ANSI_RESET = "\u001B[0m";
@@ -28,8 +28,7 @@ public class CompanyServer extends Thread {
   public void run() {
     printlnPurple("Server is waiting for client connection on port " + portNumber + ".");
 
-    // new
-    while (true) {
+    while (!exit) {
       try {
         Socket clientSocket = serverSocket.accept();
         printlnPurple("client has connected");
@@ -42,8 +41,18 @@ public class CompanyServer extends Thread {
       } catch (IOException e) {
         printlnPurple("Error: " + e.getMessage());
         e.printStackTrace();
+      } finally {
+        shipAppSockets.forEach((k,v) -> {
+          try {
+            v.close();
+          } catch (IOException e) {
+            System.out.println("Error: HashMap could not close() socket. " + e.getMessage());
+            e.printStackTrace();
+          }
+        });     
       }
     }
+    
 
   }
 
