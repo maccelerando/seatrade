@@ -1,6 +1,7 @@
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Scanner;
@@ -20,6 +21,9 @@ public class CompanyApp {
     public static void main(String[] args) {
         // database
         createDatabaseTables();
+        companyName = "TestShipCompany";
+        credit = 1000.0;
+        initializeOrUpdateShip(companyName, credit);
 
         // initialize
         String seaTradeServerAddress = setSeaTradeServerAddress();
@@ -134,15 +138,51 @@ public class CompanyApp {
                 stmt.execute(createHarbour);
                 stmt.execute(createShip);
 
-                // Hier fügen wir den initialen Eintrag für das Schiff ein, verwenden dabei den Wert von credit
-                String insertShip = "INSERT INTO ship (name, credit, position, routes) VALUES ('" + companyName + "', " + credit + ", '', 0);";
-                stmt.execute(insertShip);
-
                 System.out.println("Tables and initial ship record created successfully");
             }
         } catch (SQLException | ClassNotFoundException e) {
             System.out.println("Error creating database tables: " + e.getMessage());
         }
     }
+    
+    public static void initializeOrUpdateShip(String companyName, double credit) {
+        try (Connection con = Connect.getConnection()) {
+            if (con != null) {
+                // Überprüfen, ob das Schiff bereits existiert
+                String checkShipExists = "SELECT count(*) FROM ship WHERE name = ?";
+                boolean exists = false;
+                try (PreparedStatement pstmt = con.prepareStatement(checkShipExists)) {
+                    pstmt.setString(1, companyName);
+                    ResultSet rs = pstmt.executeQuery();
+                    if (rs.next()) {
+                        exists = rs.getInt(1) > 0;
+                    }
+                }
+
+                if (exists) {
+                    // Update existing ship credit
+                    String updateShip = "UPDATE ship SET credit = ? WHERE name = ?";
+                    try (PreparedStatement pstmt = con.prepareStatement(updateShip)) {
+                        pstmt.setDouble(1, credit);
+                        pstmt.setString(2, companyName);
+                        pstmt.executeUpdate();
+                    }
+                } else {
+                    // Insert new ship with initial credit
+                    String insertShip = "INSERT INTO ship (name, credit, position, routes) VALUES (?, ?, '', 0);";
+                    try (PreparedStatement pstmt = con.prepareStatement(insertShip)) {
+                        pstmt.setString(1, companyName);
+                        pstmt.setDouble(2, credit);
+                        pstmt.executeUpdate();
+                    }
+                }
+
+                System.out.println("Ship record initialized or updated successfully");
+            }
+        } catch (SQLException | ClassNotFoundException e) {
+            System.out.println("Error initializing or updating ship: " + e.getMessage());
+        }
+    }
+
 
 }
