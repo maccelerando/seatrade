@@ -16,7 +16,8 @@ public class ShipApp {
   private static Communicator communicatorSeaTrade;
   private static Communicator communicatorCompanyApp;
   private static UserInputHandler userInputHandler = new UserInputHandler(scanner);
-  private double credit = 0.0D;  // TODO: enhance feature
+  private static double credit = 0.0D;  // TODO: enhance feature
+  private static String shipName;
 
   private static final String[] inputSelectionStrings = new String[] {"launch:", "moveto:", "loadcargo", "unloadcargo", "exit"};
 
@@ -25,7 +26,7 @@ public class ShipApp {
     String seatradeServerAddress = setServerAddress("SeaTrade");
     int seaTradePortNumber = setPortNumber();
     // ship name
-    String shipName = userInputHandler.getUserInput("shipName");
+    shipName = userInputHandler.getUserInput("shipName");
     // harbor name
     String harborNameLaunch = "";
     while (harborNameLaunch.isEmpty()) {
@@ -46,6 +47,39 @@ public class ShipApp {
     }
 
     // TODO cleanup and exit
+  }
+  
+  private static void processInputFromSeaTrade(String input) {
+    // process input
+    String[] processedString = input.split(":");
+    switch (processedString[0]) {
+    case "registered":
+      try {
+        credit = Double.parseDouble(processedString[2]);
+      } catch (NumberFormatException e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+      }
+      // TODO add update database here
+      break;
+    case "moved":  // TODO process case company app
+      communicatorCompanyApp.getPrintWriter().println("creditupdate:" + shipName + ":-" + processedString[2]);
+      break;
+    case "reached":  // TODO process case company app
+      communicatorCompanyApp.getPrintWriter().println(processedString[0] + ":" + shipName + ":" + processedString[1]);
+      break;
+    case "loaded":  // TODO process case company app
+      // example: "loaded:898:shipName"
+      String[] loadedInfo = processedString[1].split("|");
+      communicatorCompanyApp.getPrintWriter().println(processedString[0] + ":" + loadedInfo[1] + ":" + shipName);
+      break;
+    case "unloaded":  // TODO process case company app
+      // example: unloaded:60000:shipName
+      communicatorCompanyApp.getPrintWriter().println(input + ":" + shipName);
+      break;
+    default:
+      System.out.println("Error: processInputFromSeaTrade unreachable code");
+    }
   }
 
   private static void sendToSeaTrade() {

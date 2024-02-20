@@ -54,6 +54,7 @@ public class CompanyApp {
       // TODO add update database here
       initializeOrUpdateShip(companyName, credit);
       break;
+    case "":  // TODO when ship arrives in harbour
     default:
       System.out.println("Error: processInputFromSeaTrade unreachable code");
     }
