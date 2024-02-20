@@ -1,5 +1,9 @@
 import java.util.Scanner;
 
+import java.io.IOException;
+import java.net.Socket;
+import java.net.UnknownHostException;
+
 public class ShipApp {
 
   private static final String DEFAULT_COMPANYAPP_SERVER_ADDRESS = "localhost";
@@ -12,15 +16,14 @@ public class ShipApp {
   private static Communicator communicatorSeaTrade;
   private static Communicator communicatorCompanyApp;
   private static UserInputHandler userInputHandler = new UserInputHandler(scanner);
-  private double seacoin = 0.0D;  // TODO: enhance feature
+  private double credit = 0.0D;  // TODO: enhance feature
 
   private static final String[] inputSelectionStrings = new String[] {"launch:", "moveto:", "loadcargo", "unloadcargo", "exit"};
 
   public static void main(String[] args) {
-    // TODO move server address selction to userInputHandler
-    String seatradeServerAddress = DEFAULT_SEATRADE_SERVER_ADDRESS;
-    // TODO move port number selection to userInputHandler
 
+    String seatradeServerAddress = setServerAddress("SeaTrade");
+    int seaTradePortNumber = setPortNumber();
     // ship name
     String shipName = userInputHandler.getUserInput("shipName");
     // harbor name
@@ -28,7 +31,14 @@ public class ShipApp {
     while (harborNameLaunch.isEmpty()) {
       harborNameLaunch = userInputHandler.getUserInput("harborName");
     }
-    establishSeaTradeConnection(seatradeServerAddress, DEFAULT_SEATRADE_PORT_NUMBER, shipName, harborNameLaunch);
+    // company
+    String companyName = userInputHandler.getUserInput("companyName");
+    if (!companyName.equals("Quickstart")) {
+      String companyAppServerAddress = setServerAddress("CompanyApp");
+      int companyAppPortNumber = setPortNumber();
+      establishCompanyAppConnection(companyAppServerAddress, companyAppPortNumber, shipName);
+    }
+    establishSeaTradeConnection(seatradeServerAddress, seaTradePortNumber, companyName, harborNameLaunch, shipName);
 
     // main routine
     while (!exit) {
@@ -54,23 +64,60 @@ public class ShipApp {
     }
   }
 
-  public static void establishSeaTradeConnection(String address, int portNumber, String companyName, String harborName) {
+  // example: launch:companyname:harbourname:shipname
+  public static void establishSeaTradeConnection(String address, int portNumber, String companyName, String harborName, String shipName) {
     try {
       communicatorSeaTrade = new Communicator(address, portNumber);
       // TODO: make company chooseable
-      String serverMessage = inputSelectionStrings[0] + "Quickstart:" + harborName + ":" + companyName;
-      communicatorSeaTrade.getPrintWriter().println(serverMessage);
-      System.out.println("Sent message to Server = " + serverMessage);
+      String messageSeaTrade = inputSelectionStrings[0] + companyName  + ":" + harborName + ":" + shipName;
+      communicatorSeaTrade.getPrintWriter().println(messageSeaTrade);
+      System.out.println("Sent message to Server = " + messageSeaTrade);
     } catch (Exception e) {
       System.out.println("Error establishSeaTradeConnection " + e.getMessage());
     }
   }
 
-//  public static void establishCompanyAppConnection(String address, int portNumber) {
-//    try {
-//      communicatorCompanyApp = new Communicator(address, portNumber);
-//      String messageCompanyApp =
-//    }
-//  }
+  // example: register:shipname
+  public static void establishCompanyAppConnection(String address, int portNumber, String shipName) {
+    try {
+      communicatorCompanyApp = new Communicator(address, portNumber);
+      String messageCompanyApp = "register:" + shipName;
+      communicatorCompanyApp.getPrintWriter().println(messageCompanyApp);
+      System.out.println("Sent message to CompanyApp = " + messageCompanyApp);
+    } catch (Exception e) {
+      System.out.println("Error establishCompanyAppConnection " + e.getMessage());
+    }
+  }
+  
+  public static String setServerAddress(String serverName) {
+    String address = "";
+    if (serverName.equals("SeaTrade")) {
+      address = DEFAULT_SEATRADE_SERVER_ADDRESS;
+    } else if (serverName.equals("CompanyApp")) {
+      address = DEFAULT_COMPANYAPP_SERVER_ADDRESS;
+    } else {
+      System.out.println("Error: setServerAddress invalid usecase");
+    }
+    System.out.println("Enter " + serverName + " IPv4 server address. Default is " + DEFAULT_SEATRADE_SERVER_ADDRESS + ".");
+    String userInput = userInputHandler.getUserInput("ipv4");
+    if (!userInput.isEmpty()) {
+      address = userInput;
+    } else {
+      System.out.println("No input. Using default address " + address + ".");
+    }
+    return address;
+  }
+  
+  public static int setPortNumber() {
+    int portNr = DEFAULT_SEATRADE_PORT_NUMBER;
+    System.out.println("Enter port number. Default is " + portNr + ".");
+    String userInput = userInputHandler.getUserInput("portNumber");
+    if (!userInput.isEmpty()) {
+      portNr = Integer.parseInt(userInput);
+    } else {
+      System.out.println("No input. Using default port number " + portNr + ".");
+    }
+    return portNr;
+  }
 
 }
