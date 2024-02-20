@@ -20,17 +20,17 @@ public class CompanyApp {
   private static CompanyServer companyServer;
 
   public static void main(String[] args) {
-    // database
-    createDatabaseTables();
-    companyName = "TestShipCompany";
-    credit = 1000.0;
-    initializeOrUpdateShip(companyName, credit);
+
 
     // initialize
     String seaTradeServerAddress = setSeaTradeServerAddress();
     int seaTradePortNumber = setPortNumber();
     companyName = setCompanyName();
     establishSeaTradeConnection(seaTradeServerAddress, seaTradePortNumber);
+    
+    // database
+    createDatabaseTables();
+    initializeOrUpdateShip(companyName, credit);
 
     // company server
     companyServer = new CompanyServer(8152);
@@ -46,13 +46,16 @@ public class CompanyApp {
   }
 
   private static void processInputFromSeaTrade(String input) {
-    // TODO process input
+    // process input
     String[] processedString = input.split(":");
     switch (processedString[0]) {
     case "registered":
       credit = Double.parseDouble(processedString[2]);
       // TODO add update database here
+      initializeOrUpdateShip(companyName, credit);
       break;
+    default:
+      System.out.println("Error: processInputFromSeaTrade unreachable code");
     }
   }
 
@@ -82,7 +85,6 @@ public class CompanyApp {
     } catch (Exception e) {
       System.out.println("Error establishing connection with the server: " + e.getMessage());
     }
-
     //
     new Thread(() -> {
       String input = "";
@@ -94,7 +96,7 @@ public class CompanyApp {
         }
       }
       // TODO interrupt this thread here
-    });
+    }).start();
   }
 
   public static String setSeaTradeServerAddress() {
