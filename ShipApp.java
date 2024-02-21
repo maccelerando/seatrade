@@ -57,7 +57,7 @@ public class ShipApp {
       try {
         credit = Double.parseDouble(processedString[2]);
       } catch (NumberFormatException e) {
-        // TODO Auto-generated catch block
+        System.out.println("Error processInputFromSeaTrade case registered" + e.getMessage());
         e.printStackTrace();
       }
       // TODO add update database here

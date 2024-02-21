@@ -93,7 +93,7 @@ public class CompanyApp {
         input = communicatorSeaTrade.getListener().getInput();
         if (!input.isEmpty()) {
           communicatorSeaTrade.getListener().resetInput();
-          processInputFromSeaTrade(input);
+    //      processInputFromSeaTrade(input);  // 
         }
       }
       // TODO interrupt this thread here
